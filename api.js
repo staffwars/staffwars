@@ -6,7 +6,7 @@ const request = require('request')
 
 const router = express.Router()
 
-router.push('/button', (req, res, next) => {
+router.post('/button', (req, res, next) => {
   res.json({
     result: "not implementation"
   })
