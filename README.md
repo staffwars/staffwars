@@ -17,7 +17,6 @@ npm run build
 ```
 
 ## デプロイ
-Circle CIで自動的に `npm run build` を実行した後に、build以下をコミット対象にしてGithubのmasterブランチにpushするようにしています。
+Circle CIで自動的に `npm run build` を実行した後に、GitHub pages用にdocs以下に自動的に配置してコミットしています。
 
 https://circleci.com/gh/staffwars/staffwars
-

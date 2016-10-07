@@ -12,8 +12,7 @@ deployment:
     commands:
       - git config --global user.email a.tokai.wain@gmail.com
       - git config --global user.name Naoki Iwata
-      - git add -f _build
+      - git add -f docs
       - git commit -m "build [ci skip]" || true
-      - git push git@github.com:staffwars/staffwars.git -f :gh-pages || true
-      - git push git@github.com:staffwars/staffwars.git master:gh-pages
-
+      - git pull git@github.com:staffwars/staffwars.git master
+      - git push git@github.com:staffwars/staffwars.git master
