@@ -8,6 +8,8 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
+    "pretest": "npm run build",
+    "test": "echo no test",
     "start": "node index.js"
   },
   "repository": {

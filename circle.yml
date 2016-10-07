@@ -1,0 +1,19 @@
+general:
+  artifacts:
+    - bundle.js
+
+machine:
+  node:
+    version: 6.0.0
+
+deployment:
+  github:
+    branch: master
+    commands:
+      - git config --global user.email a.tokai.wain@gmail.com
+      - git config --global user.name Naoki Iwata
+      - git add --all :/
+      - git commit -m "build [ci skip]"
+      - git pull git@github.com:staffwars/staffwars.git master
+      - git push git@github.com:staffwars/staffwars.git master
+
