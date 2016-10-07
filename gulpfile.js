@@ -6,7 +6,7 @@ gulp.task('build', function() {
   gulp.src('./src/*.js')
     .pipe(babel())
     .pipe(concat("bundle.js"))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('./_build'))
 });
 
 gulp.task('default', ['build']);
