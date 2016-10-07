@@ -15,5 +15,5 @@ deployment:
       - git add -f _build
       - git commit -m "build [ci skip]" || true
       - git push git@github.com:staffwars/staffwars.git -f :gh-pages || true
-      - git push git@github.com:staffwars/staffwars.git master gh-pages
+      - git push git@github.com:staffwars/staffwars.git master:gh-pages
 
