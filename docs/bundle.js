@@ -43,7 +43,7 @@ function start(boss_id) {
                 break;
         }
     };
-    xhr.open('POST', 'http://staffwars.azurewebsites.net/api/boss/' + boss_id + '/start', false);
+    xhr.open('POST', 'https://staffwars.azurewebsites.net/api/boss/' + boss_id + '/start', false);
     // POST 送信の場合は Content-Type は固定.
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     //
