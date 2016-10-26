@@ -197,7 +197,7 @@ gulp.task('watch', ['browserSync'], function () {
  */
 // build
 gulp.task('build', function () {
-  gulpSequence('copy', 'build:css', 'build:js')();
+  gulpSequence('del', 'copy', 'build:css', 'build:js')();
 });
 
 // default
@@ -207,5 +207,5 @@ gulp.task('default', function () {
 
 // serve
 gulp.task('serve', function () {
-  gulpSequence('del', 'build', 'watch')();
+  gulpSequence('build', 'watch')();
 });
