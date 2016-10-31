@@ -4,7 +4,7 @@
   &__text {
     font-size: $font-size-m;
     letter-spacing: 4px;
-    font-family: $font-family-gothic;
+    font-family: $font-family-kozuka;
   }
   &__caution {
     color: #ffff00;

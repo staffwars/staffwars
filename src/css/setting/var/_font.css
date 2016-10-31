@@ -2,7 +2,7 @@
 
 /* font-family */
 $font-family-default: Meiryo, "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", Osaka, Arial, Sans-serif;
-$font-family-gothic: "小塚ゴシック Pr6N R", Meiryo, "Hiragino Kaku Gothic Pro", "ＭＳ Ｐゴシック", Osaka, Arial, Sans-serif;
+$font-family-kozuka: "小塚ゴシック Pr6N";
 
 /* font-size */
 $font-size-base: 14px;
