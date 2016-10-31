@@ -17,8 +17,14 @@
 /*
  * module - BEMのBlock単位
  */
-@import "module/wrapper";
+@import "module/bg";
+@import "module/nav";
+@import "module/media";
+@import "module/time";
+@import "module/ic";
+@import "module/title";
 
 /*
  * utility - helperなど
  */
+@import "utility/txt";

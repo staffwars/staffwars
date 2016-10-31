@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.time {
+  display: table;
+  &__headline {
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 20px;
+  }
+  &__en {
+    color: #00ffff;
+    font-size: $font-size-m;
+  }
+  &__ja {
+    font-size: $font-size-xs;
+    text-align: right;
+    margin-top: 3px;
+  }
+  &__entry {
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+  }
+  &__input {
+    width: 170px;
+    height: 50px;
+    border-radius: 25px;
+    border: solid 1px #00ffff;
+    box-sizing: border-box;
+    color: #fefefe;
+    font-size: $font-size-l;
+    padding-left: 58px;
+    background: url($clock-image) 14px 13px / $clock-width $clock-height no-repeat, #004040;
+  }
+}

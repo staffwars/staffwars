@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.ic {
+  display: block;
+  &--clock {
+    @mixin sprite $clock;
+    position: absolute;
+    left: 14px;
+    top: 13px;
+  }
+}

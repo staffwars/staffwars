@@ -11,21 +11,21 @@ $icon-home: x y offset_x offset_y width height total_width total_height image_pa
 At the bottom of this section, we provide information about the spritesheet itself
 $spritesheet: width height image $spritesheet-sprites;
 */
-$sample-name: 'sample';
-$sample-x: 0px;
-$sample-y: 0px;
-$sample-offset-x: 0px;
-$sample-offset-y: 0px;
-$sample-width: 120px;
-$sample-height: 120px;
-$sample-total-width: 120px;
-$sample-total-height: 120px;
-$sample-image: '../img/sprite.png';
-$sample: (0px, 0px, 0px, 0px, 120px, 120px, 120px, 120px, '../img/sprite.png', 'sample', );
-$spritesheet-width: 120px;
-$spritesheet-height: 120px;
+$clock-name: 'clock';
+$clock-x: 0px;
+$clock-y: 0px;
+$clock-offset-x: 0px;
+$clock-offset-y: 0px;
+$clock-width: 22px;
+$clock-height: 22px;
+$clock-total-width: 22px;
+$clock-total-height: 22px;
+$clock-image: '../img/sprite.png';
+$clock: (0px, 0px, 0px, 0px, 22px, 22px, 22px, 22px, '../img/sprite.png', 'clock', );
+$spritesheet-width: 22px;
+$spritesheet-height: 22px;
 $spritesheet-image: '../img/sprite.png';
-$spritesheet-sprites: ($sample, );
-$spritesheet: (120px, 120px, '../img/sprite.png', $spritesheet-sprites, );
+$spritesheet-sprites: ($clock, );
+$spritesheet: (22px, 22px, '../img/sprite.png', $spritesheet-sprites, );
 
 

@@ -1,0 +1,11 @@
+@charset "utf-8";
+
+.title {
+  &__text {
+    font-size: $font-size-m;
+    letter-spacing: 4px;
+  }
+  &__caution {
+    color: #ffff00;
+  }
+}
