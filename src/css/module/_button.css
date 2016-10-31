@@ -1,0 +1,66 @@
+@charset "utf-8";
+
+.button {
+  width: 370px;
+  height: 56px;
+  position: relative;
+  bottom: -20px;
+  margin: 0 auto;
+  &__left {
+    @mixin sprite $arrow-left;
+    display: block;
+    position: absolute;
+    &--1 {
+      left: 33px;
+      opacity: .6;
+    }
+    &--2 {
+      left: 0;
+      opacity: .2;
+    }
+  }
+  &__right {
+    @mixin sprite $arrow-right;
+    display: block;
+    position: absolute;
+    &--1 {
+      right: 33px;
+      opacity: .6;
+    }
+    &--2 {
+      right: 0;
+      opacity: .2;
+    }
+  }
+  &__body {
+    width: 184px;
+    height: 100%;
+    color: #000;
+    font-size: $font-size-l;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    border: none;
+    position: relative;
+    &::before, &::after {
+      display: block;
+      content: "";
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 0;
+      border: solid 28px transparent;
+    }
+    &::before {
+      border-right: solid 28px #ff0;
+      left: -56px;
+    }
+    &::after {
+      border-left: solid 28px #ff0;
+      right: -56px;
+    }
+    &--start {
+      background-color: #ff0;
+    }
+  }
+}

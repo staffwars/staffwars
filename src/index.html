@@ -9,7 +9,25 @@
 </head>
 <body>
   <div class="page bg">
-    <button type=button onclick="start(1);">start</button>
+    <div class="frame">
+      <p class="frame__status">あなたを待っている部下が3人います</p>
+      <div class="staff">
+        <span class="staff__prev"></span>
+        <span class="staff__next"></span>
+        <ul class="staff__list">
+          <li class="staff__item"></li>
+          <li class="staff__item"></li>
+          <li class="staff__item"></li>
+        </ul>
+      </div>
+      <div class="button">
+        <span class="button__left button__left--1"></span>
+        <span class="button__left button__left--2"></span>
+        <span class="button__right button__right--1"></span>
+        <span class="button__right button__right--2"></span>
+        <button type="button" class="button__body button__body--start" onclick="start(1);">早押開始</button>
+      </div>
+    </div>
     <nav>
       <ul class="nav">
         <li class="nav__item">

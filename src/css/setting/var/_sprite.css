@@ -11,21 +11,43 @@ $icon-home: x y offset_x offset_y width height total_width total_height image_pa
 At the bottom of this section, we provide information about the spritesheet itself
 $spritesheet: width height image $spritesheet-sprites;
 */
+$arrow-left-name: 'arrow-left';
+$arrow-left-x: 0px;
+$arrow-left-y: 0px;
+$arrow-left-offset-x: 0px;
+$arrow-left-offset-y: 0px;
+$arrow-left-width: 51px;
+$arrow-left-height: 56px;
+$arrow-left-total-width: 106px;
+$arrow-left-total-height: 82px;
+$arrow-left-image: '../img/sprite.png';
+$arrow-left: (0px, 0px, 0px, 0px, 51px, 56px, 106px, 82px, '../img/sprite.png', 'arrow-left', );
+$arrow-right-name: 'arrow-right';
+$arrow-right-x: 55px;
+$arrow-right-y: 0px;
+$arrow-right-offset-x: -55px;
+$arrow-right-offset-y: 0px;
+$arrow-right-width: 51px;
+$arrow-right-height: 56px;
+$arrow-right-total-width: 106px;
+$arrow-right-total-height: 82px;
+$arrow-right-image: '../img/sprite.png';
+$arrow-right: (55px, 0px, -55px, 0px, 51px, 56px, 106px, 82px, '../img/sprite.png', 'arrow-right', );
 $clock-name: 'clock';
 $clock-x: 0px;
-$clock-y: 0px;
+$clock-y: 60px;
 $clock-offset-x: 0px;
-$clock-offset-y: 0px;
+$clock-offset-y: -60px;
 $clock-width: 22px;
 $clock-height: 22px;
-$clock-total-width: 22px;
-$clock-total-height: 22px;
+$clock-total-width: 106px;
+$clock-total-height: 82px;
 $clock-image: '../img/sprite.png';
-$clock: (0px, 0px, 0px, 0px, 22px, 22px, 22px, 22px, '../img/sprite.png', 'clock', );
-$spritesheet-width: 22px;
-$spritesheet-height: 22px;
+$clock: (0px, 60px, 0px, -60px, 22px, 22px, 106px, 82px, '../img/sprite.png', 'clock', );
+$spritesheet-width: 106px;
+$spritesheet-height: 82px;
 $spritesheet-image: '../img/sprite.png';
-$spritesheet-sprites: ($clock, );
-$spritesheet: (22px, 22px, '../img/sprite.png', $spritesheet-sprites, );
+$spritesheet-sprites: ($arrow-left, $arrow-right, $clock, );
+$spritesheet: (106px, 82px, '../img/sprite.png', $spritesheet-sprites, );
 
 

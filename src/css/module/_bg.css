@@ -2,7 +2,7 @@
 
 .bg {
   background: url('../img/bg-light.png') center / auto 100% no-repeat,
-    url('../img/bg-gu.png') center / auto 780px no-repeat;
+    url('../img/bg-gu-line.png') center / auto 780px no-repeat;
   height: 100%;
   position: relative;
 }

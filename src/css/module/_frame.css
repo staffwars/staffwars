@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+.frame {
+  width: 870px;
+  height: 489px;
+  background: url('../img/frame.png') center no-repeat;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  &::before {
+    display: block;
+    content: "";
+    background: url('../img/frame-boss.png') no-repeat;
+    width: 269px;
+    height: 16px;
+    position: absolute;
+    top: -73px;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+  &::after {
+    display: block;
+    content: "";
+    background: url('../img/frame-staffwars.png') no-repeat;
+    width: 870px;
+    height: 15px;
+    position: absolute;
+    top: -40px;
+    bottom: 0;
+    left: -10px;
+    margin: auto;
+  }
+  &__status {
+    text-align: center;
+    color: #fff;
+    font-size: $font-size-m;
+    line-height: 1;
+  }
+}

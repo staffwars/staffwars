@@ -2,8 +2,8 @@
 
 @define-mixin sprite $name {
   background-image: url($(name)-image);
-  background-size: calc($(name)-total-width) calc($(name)-total-height);
-  background-position: calc($(name)-offset-x) calc($(name)-offset-y);
-  width: calc($(name)-width);
-  height: calc($(name)-height);
+  background-size: $(name)-total-width $(name)-total-height;
+  background-position: $(name)-offset-x $(name)-offset-y;
+  width: $(name)-width;
+  height: $(name)-height;
 }

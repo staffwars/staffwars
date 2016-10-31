@@ -8,7 +8,7 @@
     padding-right: 20px;
   }
   &__en {
-    color: #00ffff;
+    color: #0ff;
     font-size: $font-size-m;
   }
   &__ja {
@@ -20,17 +20,28 @@
     display: table-cell;
     vertical-align: middle;
     position: relative;
+    &::before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: -2px;
+      bottom: 0;
+      left: 14px;
+      margin: auto;
+      @mixin sprite $clock;
+    }
   }
   &__input {
     width: 170px;
     height: 50px;
     border-radius: 25px;
-    border: solid 1px #00ffff;
+    border: solid 1px #0ff;
     box-sizing: border-box;
     color: #fefefe;
     font-size: $font-size-l;
     padding-left: 58px;
-    background: url($clock-image) 14px 13px / $clock-width $clock-height no-repeat, #004040;
+    /*background: url($clock-image) 14px 13px / $clock-width $clock-height no-repeat, #004040;*/
+    background-color: #004040;
     font-weight: bold;
   }
 }

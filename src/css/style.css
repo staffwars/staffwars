@@ -23,6 +23,9 @@
 @import "module/time";
 @import "module/ic";
 @import "module/title";
+@import "module/frame";
+@import "module/staff";
+@import "module/button";
 
 /*
  * utility - helperなど
