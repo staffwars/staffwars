@@ -8,9 +8,37 @@
   <script src="js/bundle.js"></script>
 </head>
 <body>
-  <div class="wrapper">
-    <img src="img/icon.png" alt="">
+  <div class="page bg">
     <button type=button onclick="start(1);">start</button>
+    <nav>
+      <ul class="nav">
+        <li class="nav__item">
+          <div class="media">
+            <div class="media__img"><img src="img/matsumura.png" width="50" height="50" alt="松村 翔子"></div>
+            <div class="media__text">
+              <p class="media__job">Z14推進機関 第一開発部 主任</p>
+              <p class="media__name">松村 翔子</p>
+            </div>
+          </div>
+        </li>
+        <li class="nav__item">
+          <div class="time">
+            <div class="time__headline">
+              <p class="time__en">SCHEDULE</p>
+              <p class="time__ja">着席予定時間</p>
+            </div>
+            <div class="time__entry">
+              <input type="time" class="time__input" value="15:00">
+            </div>
+          </div>
+        </li>
+        <li class="nav__item">
+          <div class="title">
+            <p class="title__text">全社員早押<span class="title__caution">上司</span>争奪戦</p>
+          </div>
+        </li>
+      </ul>
+    </nav>
   </div>
 </body>
 </html>
