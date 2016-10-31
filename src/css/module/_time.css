@@ -31,5 +31,6 @@
     font-size: $font-size-l;
     padding-left: 58px;
     background: url($clock-image) 14px 13px / $clock-width $clock-height no-repeat, #004040;
+    font-weight: bold;
   }
 }

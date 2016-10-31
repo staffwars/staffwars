@@ -4,6 +4,7 @@
   &__text {
     font-size: $font-size-m;
     letter-spacing: 4px;
+    font-family: $font-family-gothic;
   }
   &__caution {
     color: #ffff00;
