@@ -26,6 +26,10 @@
 @import "module/frame";
 @import "module/staff";
 @import "module/button";
+@import "module/box";
+@import "module/status";
+@import "module/counter";
+@import "module/resultTable";
 
 /*
  * utility - helperなど

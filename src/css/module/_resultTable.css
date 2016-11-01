@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+.resultTable {
+  text-align: left;
+  &__caption {
+    color: #ffff64;
+    font-size: $font-size-m;
+    padding: 11px 0;
+  }
+  &__td {
+    padding: 5px 0;
+  }
+  &__rank {
+    color: #ffff64;
+    padding-right: 7px;
+  }
+  &__name {
+    color: #fff;
+    padding-left: 7px;
+    padding-right: 10px;
+  }
+  &__time {
+    color: #fff;
+    padding-left: 10px;
+  }
+}

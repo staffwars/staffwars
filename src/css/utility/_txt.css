@@ -10,6 +10,14 @@
 .txt-l { /* 18px */
   font-size: $font-size-l;
 }
+.txt-xxl { /* 40px */
+  font-size: $font-size-xxl;
+}
+
+/* font-weight */
+.txt-bold {
+  font-weight: bold;
+}
 
 /* color */
 .txt-primary { /* #0ff */

@@ -1,0 +1,34 @@
+@charset "utf-8";
+
+.counter {
+  &--1 {
+    @mixin sprite $counter-1;
+  }
+  &--2 {
+    @mixin sprite $counter-2;
+  }
+  &--3 {
+    @mixin sprite $counter-3;
+  }
+  &--4 {
+    @mixin sprite $counter-4;
+  }
+  &--5 {
+    @mixin sprite $counter-5;
+  }
+  &--6 {
+    @mixin sprite $counter-6;
+  }
+  &--7 {
+    @mixin sprite $counter-7;
+  }
+  &--8 {
+    @mixin sprite $counter-8;
+  }
+  &--9 {
+    @mixin sprite $counter-9;
+  }
+  &--10 {
+    @mixin sprite $counter-10;
+  }
+}

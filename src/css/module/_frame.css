@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 .frame {
-  width: 870px;
+  width: 494px;
   height: 489px;
   background: url('../img/frame.png') center no-repeat;
   position: absolute;
@@ -31,8 +31,13 @@
     position: absolute;
     top: -40px;
     bottom: 0;
-    left: -10px;
+    left: -200px;
     margin: auto;
+  }
+  &__container {
+    width: 400px;
+    height: 489px;
+    margin: 0 auto;
   }
   &__status {
     text-align: center;
@@ -42,10 +47,10 @@
     position: relative;
     top: -2px;
   }
-  &__staff {
-    margin-top: 36px;
+  &__body {
+    margin-top: 32px;
   }
-  &__button {
-    margin: 35px auto;
+  &__bottom {
+    margin: 35px auto 0;
   }
 }

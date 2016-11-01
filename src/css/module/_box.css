@@ -1,0 +1,21 @@
+@charset "utf-8";
+
+.box {
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  &__container {
+  }
+  &__table {
+    display: flex;
+    justify-content: center;
+  }
+  &--dark {
+    background-color: rgba(0, 255, 255, .1);
+  }
+  &--bright {
+    background-color: rgba(0, 255, 255, .4);
+  }
+}

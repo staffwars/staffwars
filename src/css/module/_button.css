@@ -5,7 +5,6 @@
   height: 56px;
   position: relative;
   &__left {
-    @mixin sprite $arrow-left;
     display: block;
     position: absolute;
     &--1 {
@@ -18,7 +17,6 @@
     }
   }
   &__right {
-    @mixin sprite $arrow-right;
     display: block;
     position: absolute;
     &--1 {
@@ -51,15 +49,46 @@
       border: solid 28px transparent;
     }
     &::before {
-      border-right: solid 28px $color-accent;
+      border-right: solid 28px;
       left: -56px;
     }
     &::after {
-      border-left: solid 28px $color-accent;
+      border-left: solid 28px;
       right: -56px;
     }
-    &--start {
+  }
+  &--accent {
+    .button__body {
       background-color: $color-accent;
+      &::before{
+        border-right-color: $color-accent;
+      }
+      &::after{
+        border-left-color: $color-accent;
+      }
+    }
+    .button__left {
+      @mixin sprite $arrow-left-accent;
+    }
+    .button__right {
+      @mixin sprite $arrow-right-accent;
+    }
+  }
+  &--primary {
+    .button__body {
+      background-color: $color-primary;
+      &::before{
+        border-right-color: $color-primary;
+      }
+      &::after{
+        border-left-color: $color-primary;
+      }
+    }
+    .button__left {
+      @mixin sprite $arrow-left-primary;
+    }
+    .button__right {
+      @mixin sprite $arrow-right-primary;
     }
   }
 }
