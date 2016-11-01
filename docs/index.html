@@ -8,19 +8,52 @@
   <script src="js/bundle.js"></script>
 </head>
 <body>
-  <div class="page bg">
+  <div id="page" class="bg">
     <div class="frame">
       <p class="frame__status">あなたを待っている部下が3人います</p>
-      <div class="staff">
+      <div class="frame__staff staff">
+        <ul class="staff__list">
+          <li class="staff__item">
+            <div class="media">
+              <div class="media__img media__img--border">
+                <img src="img/kaifuku.png" width="80" height="80" alt="kaifuku">
+              </div>
+              <div class="media__text">
+                <p class="txt-s txt-primary">STAFF:01</p>
+                <p class="txt-s mg-8t">Z14推進機関 第一開発部 エンジニア</p>
+                <p class="txt-l mg-3t">kaifuku</p>
+              </div>
+            </div>
+          </li>
+          <li class="staff__item">
+            <div class="media">
+              <div class="media__img media__img--border">
+                <img src="img/iwata-na.png" width="80" height="80" alt="岩田 直樹">
+              </div>
+              <div class="media__text">
+                <p class="txt-s txt-primary">STAFF:02</p>
+                <p class="txt-s mg-8t">Z14推進機関 第一開発部 エンジニア</p>
+                <p class="txt-l mg-3t">岩田 直樹</p>
+              </div>
+            </div>
+          </li>
+          <li class="staff__item">
+            <div class="media">
+              <div class="media__img media__img--border">
+                <img src="img/seki-may.png" width="80" height="80" alt="関 真由美">
+              </div>
+              <div class="media__text">
+                <p class="txt-s txt-primary">STAFF:03</p>
+                <p class="txt-s mg-8t">Z14推進機関 第一開発部 フロントエンドエンジニア</p>
+                <p class="txt-l mg-3t">関 真由美</p>
+              </div>
+            </div>
+          </li>
+        </ul>
         <span class="staff__prev"></span>
         <span class="staff__next"></span>
-        <ul class="staff__list">
-          <li class="staff__item"></li>
-          <li class="staff__item"></li>
-          <li class="staff__item"></li>
-        </ul>
       </div>
-      <div class="button">
+      <div class="frame__button button">
         <span class="button__left button__left--1"></span>
         <span class="button__left button__left--2"></span>
         <span class="button__right button__right--1"></span>
@@ -32,10 +65,12 @@
       <ul class="nav">
         <li class="nav__item">
           <div class="media">
-            <div class="media__img"><img src="img/matsumura.png" width="50" height="50" alt="松村 翔子"></div>
+            <div class="media__img">
+              <img src="img/matsumura-s.png" width="50" height="50" alt="松村 翔子">
+            </div>
             <div class="media__text">
-              <p class="media__job">Z14推進機関 第一開発部 主任</p>
-              <p class="media__name">松村 翔子</p>
+              <p class="txt-s">Z14推進機関 第一開発部 主任</p>
+              <p class="txt-m mg-3t">松村 翔子</p>
             </div>
           </div>
         </li>
@@ -52,7 +87,7 @@
         </li>
         <li class="nav__item">
           <div class="title">
-            <p class="title__text">全社員早押<span class="title__caution">上司</span>争奪戦</p>
+            <h2 class="title__text">全社員早押<span class="title__caution">上司</span>争奪戦</h2>
           </div>
         </li>
       </ul>
