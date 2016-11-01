@@ -9,7 +9,7 @@
     display: block;
     position: absolute;
     &--1 {
-      left: 33px;
+      left: 32px;
       opacity: .6;
     }
     &--2 {
@@ -22,7 +22,7 @@
     display: block;
     position: absolute;
     &--1 {
-      right: 33px;
+      right: 32px;
       opacity: .6;
     }
     &--2 {

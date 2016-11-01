@@ -21,11 +21,25 @@
     bottom: -30px;
   }
   &__item {
-    background-color: rgba(0, 255, 255, .25);
     width: 400px;
     height: 110px;
     margin: 10px auto;
     padding: 15px;
     box-sizing: border-box;
+    position: relative;
+    &--active {
+      background-color: rgba(0, 255, 255, .25);
+    }
+    &--inactive {
+      background-color: rgba(0, 255, 255, .1);
+    }
+  }
+  &__num {
+    position: absolute;
+    font-size: 2.85714rem; /* 40px */
+    color: rgba(0, 255, 255, .2);
+    bottom: 10px;
+    right: 12px;
+    line-height: 1;
   }
 }
