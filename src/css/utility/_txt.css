@@ -1,1 +1,18 @@
 @charset "utf-8";
+
+/* font-size */
+.txt-s { /* 12px */
+  font-size: $font-size-s;
+}
+.txt-m { /* 16px */
+  font-size: $font-size-m;
+}
+.txt-l { /* 18px */
+  font-size: $font-size-l;
+}
+
+/* color */
+.txt-primary { /* #0ff */
+  color: $color-primary
+}
+

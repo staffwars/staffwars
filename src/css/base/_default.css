@@ -24,3 +24,8 @@ a {
   color: $color-link;
   text-decoration: none;
 }
+
+input,
+button {
+  outline: none;
+}

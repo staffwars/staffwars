@@ -3,6 +3,9 @@
 /* color */
 $color-default: #f9f6f4;
 $color-link: #B6B6B6;
+$color-primary: #0ff;
+$color-accent: #ff0; 
+
 
 /* bgcolor */
 $bgcolor-default: #000;

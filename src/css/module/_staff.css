@@ -1,7 +1,6 @@
 @charset "utf-8";
 
 .staff {
-  margin-top: 36px;
   position: relative;
   &__prev, &__next {
     width: 0;
@@ -11,19 +10,22 @@
     right: 0;
     margin: auto;
     border: solid 10px transparent;
+    cursor: pointer;
   }
   &__prev {
-    border-bottom: solid 10px #0ff;
+    border-bottom: solid 10px $color-primary;
     top: -30px;
   }
   &__next {
-    border-top: solid 10px #0ff;
+    border-top: solid 10px $color-primary;
     bottom: -30px;
   }
   &__item {
     background-color: rgba(0, 255, 255, .25);
     width: 400px;
     height: 110px;
-    margin: 0 auto 10px;
+    margin: 10px auto;
+    padding: 15px;
+    box-sizing: border-box;
   }
 }

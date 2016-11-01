@@ -4,8 +4,6 @@
   width: 370px;
   height: 56px;
   position: relative;
-  bottom: -20px;
-  margin: 0 auto;
   &__left {
     @mixin sprite $arrow-left;
     display: block;
@@ -36,12 +34,13 @@
     width: 184px;
     height: 100%;
     color: #000;
-    font-size: $font-size-l;
+    font-size: $font-size-xl;
     font-weight: bold;
     display: block;
     margin: 0 auto;
     border: none;
     position: relative;
+    cursor: pointer;
     &::before, &::after {
       display: block;
       content: "";
@@ -52,15 +51,15 @@
       border: solid 28px transparent;
     }
     &::before {
-      border-right: solid 28px #ff0;
+      border-right: solid 28px $color-accent;
       left: -56px;
     }
     &::after {
-      border-left: solid 28px #ff0;
+      border-left: solid 28px $color-accent;
       right: -56px;
     }
     &--start {
-      background-color: #ff0;
+      background-color: $color-accent;
     }
   }
 }

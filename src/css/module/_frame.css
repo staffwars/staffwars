@@ -39,5 +39,13 @@
     color: #fff;
     font-size: $font-size-m;
     line-height: 1;
+    position: relative;
+    top: -2px;
+  }
+  &__staff {
+    margin-top: 36px;
+  }
+  &__button {
+    margin: 35px auto;
   }
 }

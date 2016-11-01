@@ -5,17 +5,14 @@
   &__img {
     display: table-cell;
     vertical-align: middle;
-    padding-right: 20px;
+    &--border {
+      border-radius: 50%;
+      border: solid 1px $color-primary;
+    }
   }
   &__text {
     display: table-cell;
     vertical-align: middle;
-  }
-  &__job {
-    font-size: $font-size-s;
-  }
-  &__name {
-    font-size: $font-size-m;
-    margin-top: 3px;
+    padding-left: 20px;
   }
 }
