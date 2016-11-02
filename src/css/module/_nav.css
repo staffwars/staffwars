@@ -9,12 +9,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   &__item {
-    &:nth-child(2) {
+    /*&:nth-child(2) {
       margin-left: 88px;
     }
     &:nth-child(3) {
       margin-left: 117px;
-    }
+    }*/
   }
 }

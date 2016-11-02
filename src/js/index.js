@@ -7,7 +7,7 @@ ds.on('post', function(data) {
   console.log(data);
 });
 
-console.log('start')
+console.log('start');
 
 function start(boss_id) {
   var xhr = new XMLHttpRequest();

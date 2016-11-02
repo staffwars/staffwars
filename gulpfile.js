@@ -112,7 +112,7 @@ gulp.task('build:css', function () {
 var babel = require('gulp-babel');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
-gulp.task('build:js', function() {
+gulp.task('concat', function() {
   return gulp.src(path.js_src + '**/*.js')
     .pipe(plumber({
       errorHandler: notify.onError('<%= error.message %>')
@@ -124,7 +124,25 @@ gulp.task('build:js', function() {
     .pipe(gulp.dest(path.dist + 'js/'))
     .pipe(size({
       title: 'size : js'
-    }));;
+    }));
+});
+
+// browserify
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var babelify = require('babelify');
+gulp.task('browserify', function () {
+  return browserify({entries: [path.js_src + 'script.js']})
+    .transform(babelify, {presets: 'es2015'})
+    .bundle()
+    .pipe(plumber({
+      errorHandler: notify.onError('<%= error.message %>')
+    }))
+    .pipe(source('script.js'))
+    .pipe(gulp.dest(path.dist + 'js/'))
+    .pipe(size({
+      title: 'size : js'
+    }));
 });
 
 // eslint
@@ -185,7 +203,7 @@ gulp.task('bs-reload', function() {
 gulp.task('watch', ['browserSync'], function () {
   gulp.watch(path.src + '**/*.html', ['copy']);
   gulp.watch(path.css_src + '**/*.css', ['build:css']);
-  gulp.watch(path.js_src + '**/*.js', ['build:js']);
+  gulp.watch(path.js_src + '**/*.js', ['concat', 'browserify']);
   gulp.watch(path.img_src + '**/*.{png,jpg,gif}', ['copy']);
   gulp.watch('gulpfile.js', ['build']);
   gulp.watch(path.src + '**/*', ['bs-reload']);
@@ -197,7 +215,7 @@ gulp.task('watch', ['browserSync'], function () {
  */
 // build
 gulp.task('build', function () {
-  gulpSequence('del', 'copy', 'build:css', 'build:js')();
+  gulpSequence('del', 'copy', 'build:css', 'concat', 'browserify')();
 });
 
 // default
