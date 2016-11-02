@@ -4,11 +4,35 @@
   <meta charset="utf-8">
   <title>STAFF WARS</title>
   <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
-  <script src="js/bundle.js"></script>
 </head>
 <body>
   <div id="page" class="bg">
+    <!-- xx -->
+    <div class="frame">
+      <div class="frame__container">
+        <div class="frame__body box box--dark">
+          <div class="box__container">
+            <img src="img/under_construction.png" width="50" height="50" alt="もう少し待っててね">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /xx -->
+    <!-- 00 -->
+    <!-- <div class="frame">
+      <div class="frame__container">
+        <p class="frame__status">ログイン（仮）</p>
+        <div class="frame__body box box--dark">
+          <div class="box__container">
+            <form method="get">
+              <input type="text" id="js-login-id" placeholder="id">
+              <button type="button" id="js-login-button">ログイン</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- /00 -->
     <!-- 01 -->
     <!-- <div class="frame">
       <div class="frame__container">
@@ -25,7 +49,7 @@
     </div> -->
     <!-- /01 -->
     <!-- 02~03 -->
-    <div class="frame">
+    <!-- <div class="frame">
       <div class="frame__container">
         <p class="frame__status">あなたを待っている部下が3人います</p>
         <div class="frame__body staff">
@@ -82,7 +106,7 @@
           <button type="button" class="button__body" onclick="start(1);">早押開始</button>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- /02~03 -->
     <!-- 04 -->
     <!-- <div class="frame">
@@ -140,18 +164,18 @@
     <!-- /05 -->
     <nav>
       <ul class="nav">
-        <li class="nav__item">
+        <li id="js-boss-info" class="nav__item is-hidden">
           <div class="media">
             <div class="media__img">
-              <img src="img/matsumura-s.png" width="50" height="50" alt="松村 翔子">
+              <img src="img/matsumura-s.png" width="50" height="50" alt="">
             </div>
             <div class="media__text">
-              <p class="txt-s">Z14推進機関 第一開発部 主任</p>
-              <p class="txt-m mg-3t">松村 翔子</p>
+              <p class="txt-s">{{organization}}</p>
+              <p class="txt-m mg-3t">{{name}}</p>
             </div>
           </div>
         </li>
-        <li class="nav__item">
+        <li class="nav__item is-hidden">
           <div class="time">
             <div class="time__headline">
               <p class="time__en">SCHEDULE</p>
@@ -170,5 +194,11 @@
       </ul>
     </nav>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+  <script src="https://cdn.mlkcca.com/v0.6.0/milkcocoa.js"></script>
+  <!-- あとでくっつける -->
+  <script src="js/script.js"></script>
+  <script src="js/bundle.js"></script>
+  <!-- /あとでくっつける -->
 </body>
 </html>
