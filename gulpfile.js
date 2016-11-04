@@ -206,7 +206,7 @@ gulp.task('watch', ['browserSync'], function () {
   gulp.watch(path.js_src + '**/*.js', ['concat', 'browserify']);
   gulp.watch(path.img_src + '**/*.{png,jpg,gif}', ['copy']);
   gulp.watch('gulpfile.js', ['build']);
-  gulp.watch(path.src + '**/*', ['bs-reload']);
+  gulp.watch(path.dist + '**/*', ['bs-reload']);
 });
 
 

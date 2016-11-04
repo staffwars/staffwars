@@ -1,9 +1,9 @@
-import Login from './module/Login';
+import Hoge from './module/Hoge';
 
 (() => {
 
-  const login = new Login();
+  const hoge = new Hoge();
 
-  login.init();
+  hoge.init();
 
 })();

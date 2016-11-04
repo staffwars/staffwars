@@ -11,11 +11,11 @@
   justify-content: center;
   flex-wrap: wrap;
   &__item {
-    /*&:nth-child(2) {
-      margin-left: 88px;
+    &:first-child {
+      margin-right: 88px;
     }
-    &:nth-child(3) {
-      margin-left: 117px;
-    }*/
+    &:nth-child(2) {
+      margin-right: 117px;
+    }
   }
 }

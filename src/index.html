@@ -19,16 +19,19 @@
     </div>
     <!-- /xx -->
     <!-- 00 -->
-    <!-- <div class="frame">
+    <!-- <div id="js-frame" class="frame">
       <div class="frame__container">
-        <p class="frame__status">ログイン（仮）</p>
+        <p class="frame__status">{{top_status}}</p>
         <div class="frame__body box box--dark">
           <div class="box__container">
-            <form method="get">
-              <input type="text" id="js-login-id" placeholder="id">
-              <button type="button" id="js-login-button">ログイン</button>
+            <form method="get" v-bind:class="{'is-hidden': isHiddenForm}">
+              <input type="text" id="js-login-code" placeholder="your code" v-model="code" v-bind:value="code">
+              <button type="button" v-on:click="clickHandler">ログイン</button>
             </form>
           </div>
+        </div>
+        <div class="frame__bottom status">
+          <p class="status__text">{{bottom_status}}</p>
         </div>
       </div>
     </div> -->
@@ -163,11 +166,11 @@
     </div> -->
     <!-- /05 -->
     <nav>
-      <ul class="nav">
-        <li id="js-boss-info" class="nav__item is-hidden">
+      <ul id="js-nav" class="nav">
+        <li id="js-boss-info" class="nav__item" v-bind:class="{'is-hidden': isHiddenBossInFo}">
           <div class="media">
             <div class="media__img">
-              <img src="img/matsumura-s.png" width="50" height="50" alt="">
+              <img v-bind:src="img" width="50" height="50" alt="">
             </div>
             <div class="media__text">
               <p class="txt-s">{{organization}}</p>
@@ -175,14 +178,14 @@
             </div>
           </div>
         </li>
-        <li class="nav__item is-hidden">
+        <li class="nav__item" v-bind:class="{'is-hidden': isHiddenSchedule}">
           <div class="time">
             <div class="time__headline">
               <p class="time__en">SCHEDULE</p>
               <p class="time__ja">着席予定時間</p>
             </div>
             <div class="time__entry">
-              <input type="time" class="time__input" value="15:00">
+              <input type="time" class="time__input" v-bind:value="time">
             </div>
           </div>
         </li>
