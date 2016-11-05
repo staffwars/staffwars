@@ -19,10 +19,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../css/setting/var";
-@import "../css/base/reset";
-@import "../css/base/default";
-@import "../css/utility/is";
-@import "../css/utility/mg";
-@import "../css/utility/txt";
+@import "../scss/setting/var";
+@import "../scss/base/reset";
+@import "../scss/base/default";
+@import "../scss/utility/is";
+@import "../scss/utility/mg";
+@import "../scss/utility/txt";
 </style>

@@ -89,10 +89,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/setting/var";
-@import "../../css/setting/sprite";
-@import "../../css/module/navigation";
-@import "../../css/module/media";
-@import "../../css/module/title";
-@import "../../css/module/time";
+@import "../../scss/setting/var";
+@import "../../scss/setting/sprite";
+@import "../../scss/module/navigation";
+@import "../../scss/module/media";
+@import "../../scss/module/title";
+@import "../../scss/module/time";
 </style>

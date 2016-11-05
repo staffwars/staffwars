@@ -351,13 +351,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../css/setting/var";
-@import "../../css/setting/sprite";
-@import "../../css/module/bg";
-@import "../../css/module/frame";
-@import "../../css/module/box";
-@import "../../css/module/status";
-@import "../../css/module/button";
-@import "../../css/module/staff";
-@import "../../css/module/media";
+@import "../../scss/setting/var";
+@import "../../scss/setting/sprite";
+@import "../../scss/module/bg";
+@import "../../scss/module/frame";
+@import "../../scss/module/box";
+@import "../../scss/module/status";
+@import "../../scss/module/button";
+@import "../../scss/module/staff";
+@import "../../scss/module/media";
 </style>
