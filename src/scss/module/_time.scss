@@ -32,7 +32,7 @@
       bottom: 0;
       left: 14px;
       margin: auto;
-      @mixin sprite $clock;
+      @include sprite($clock);
     }
   }
   &__input {

@@ -68,10 +68,10 @@
       }
     }
     .button__left {
-      @mixin sprite $arrow-left-accent;
+      @include sprite($arrow-left-accent);
     }
     .button__right {
-      @mixin sprite $arrow-right-accent;
+      @include sprite($arrow-right-accent);
     }
   }
   &--primary {
@@ -85,10 +85,10 @@
       }
     }
     .button__left {
-      @mixin sprite $arrow-left-primary;
+      @include sprite($arrow-left-primary);
     }
     .button__right {
-      @mixin sprite $arrow-right-primary;
+      @include sprite($arrow-right-primary);
     }
   }
 }
