@@ -29,12 +29,12 @@
                   <img v-bind:src="'img/' + staffData.code + '.png'" width="80" height="80" v-bind:alt="staffData.name">
                 </div>
                 <div class="media__text">
-                  <p class="txt-s txt-primary">STAFF:0{{ staffData.id }}</p>
+                  <p class="txt-s txt-primary">STAFF:0{{ staffData.index }}</p>
                   <p class="txt-s mg-8t">{{ staffData.organization }}</p>
                   <p class="txt-l mg-3t">{{ staffData.name }}</p>
                 </div>
               </div>
-              <span class="staff__num">0{{ staffData.id }}</span>
+              <span class="staff__num">0{{ staffData.index }}</span>
             </li>
           </ul>
           <span class="staff__prev" v-if="isActivePrev" v-on:click="listPrevClickHandler"></span>
@@ -295,8 +295,8 @@ export default {
     showStaffPage (staffData, staffLength) {
       this.top_status = `あなたを待っている部下が${staffLength}人います`;
 
-      // 部下情報をdataに追加
-      this.staffDatas = staffData;
+      // index番号を追加した部下情報をdataに追加
+      this.staffDatas = this.addIndex(staffData);
 
       // boxを非表示に
       this.isActiveBox = false;
@@ -304,8 +304,8 @@ export default {
       // 部下情報を表示
       this.isActiveStaff = true;
 
-      // 矢印初期表示
       if (staffLength > 3) {
+        // 矢印初期表示
         this.isActiveNext = true;
       }
 
@@ -315,6 +315,13 @@ export default {
 
       // 早押しボタン表示
       this.isActiveBottomButton = true;
+    },
+
+    addIndex (staffData) {
+      for (let i = 0, length = staffData.length; i < length; i++) {
+        staffData[i].index = i + 1;
+      }
+      return staffData;
     },
 
     // 早押し開始
