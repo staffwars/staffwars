@@ -151,7 +151,7 @@ export default {
               organization: bossData.organization,
               name: bossData.name,
               time: this.formatStartTime(bossData.start_datetime)
-            }
+            };
 
             // ログインフォーム非表示
             this.isActiveForm = false;
@@ -181,6 +181,7 @@ export default {
           }
         }, (response) => {
           // error callback
+          console.log(response);
         });
     },
 
@@ -190,58 +191,56 @@ export default {
 
       if (bossData.length === 1) {
         return bossData[0];
-      } else {
-        return null;
       }
+
+      return null;
     },
 
     // APIから受け取った時間を、hh:mmの文字列に変換
     formatStartTime (ISOString) {
       const dt = new Date(ISOString);
 
-      return `${dt.getHours()}:${dt.getMinutes()}`
+      return `${dt.getHours()}:${dt.getMinutes()}`;
     },
 
     // 上司を待っている部下を取得
     getWaitStaff () {
       this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`).then((response) => {
         // success callback
-        // console.log(response);
         this.countWaitStaff(response);
       }, (response) => {
         // error callback
+        console.log(response);
       });
     },
 
     // 上司待ちを登録（テスト用）
     registerStaff(code) {
       const body = {
-        "code": code
+        code: code
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`, body).then((response) => {
         // success callback
-        // console.log(response);
         this.countWaitStaff(response);
       }, (response) => {
         // error callback
-        // console.log(response);
+        console.log(response);
       });
     },
 
     // 上司待ちを解除
     unregisterStaff(code) {
       const body = {
-        "code": code
+        code: code
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/unregist/`, body).then((response) => {
         // success callback
-        // console.log(response);
         this.countWaitStaff(response);
       }, (response) => {
         // error callback
-        // console.log(response);
+        console.log(response);
       });
     },
 
@@ -289,7 +288,7 @@ export default {
       this.isActiveStaff = true;
 
       // 空枠表示切り替え
-      this.switchInActiveStaffItem(staffLength)
+      this.switchInActiveStaffItem(staffLength);
 
       if (staffLength > 3) {
         // 矢印初期表示
@@ -330,35 +329,35 @@ export default {
       const xhr = new XMLHttpRequest();
       // ハンドラの登録.
       xhr.onreadystatechange = () => {
-          switch ( xhr.readyState ) {
-              case 0:
-                  // 未初期化状態.
-                  console.log( 'uninitialized!' );
-                  break;
-              case 1: // データ送信中.
-                  console.log( 'loading...' );
-                  break;
-              case 2: // 応答待ち.
-                  console.log( 'loaded.' );
-                  break;
-              case 3: // データ受信中.
-                  console.log( `interactive... ${xhr.responseText.length} bytes.` );
-                  break;
-              case 4: // データ受信完了.
-                  if( xhr.status == 200 || xhr.status == 304 ) {
-                      const data = xhr.responseText; // responseXML もあり
-                      console.log( `COMPLETE! :${data}` );
-                  } else {
-                      console.log( `Failed. HttpStatus: ${xhr.statusText}` );
-                  }
-                  break;
+      switch (xhr.readyState) {
+        case 0:
+          // 未初期化状態.
+          console.log('uninitialized!');
+          break;
+        case 1: // データ送信中.
+          console.log('loading...');
+          break;
+        case 2: // 応答待ち.
+          console.log('loaded.');
+          break;
+        case 3: // データ受信中.
+          console.log(`interactive... ${xhr.responseText.length} bytes.`);
+          break;
+        case 4: // データ受信完了.
+          if (xhr.status === 200 || xhr.status === 304) {
+            const data = xhr.responseText; // responseXML もあり
+            console.log(`COMPLETE! :${data}`);
+          } else {
+            console.log(`Failed. HttpStatus: ${xhr.statusText}`);
           }
+          break;
+      }
       };
-      xhr.open( 'POST', `https://staffwars.azurewebsites.net/api/boss/${this.id}/start/`, false );
+      xhr.open('POST', `https://staffwars.azurewebsites.net/api/boss/${this.id}/start/`, false);
       // POST 送信の場合は Content-Type は固定.
-      xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
       //
-      xhr.send( '' );
+      xhr.send('');
       xhr.abort(); // 再利用する際にも abort() しないと再利用できないらしい.
     },
 
@@ -381,7 +380,7 @@ export default {
 
   }
 
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -62,10 +62,10 @@ export default {
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
         // success callback
-        // console.log(response);
+        console.log(response);
       }, (response) => {
         // error callback
-        // console.log(response);
+        console.log(response);
       });
     },
 

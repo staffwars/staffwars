@@ -7,7 +7,7 @@
 
 <script>
 // import Hello from './components/Hello.vue'
-import Page from './components/Page.vue'
+import Page from './components/Page.vue';
 
 export default {
   name: 'app',
@@ -15,7 +15,7 @@ export default {
     // Hello
     Page
   }
-}
+};
 </script>
 
 <style lang="scss">
