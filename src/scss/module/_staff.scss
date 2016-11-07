@@ -2,7 +2,6 @@
 
 .staff {
   position: relative;
-  background: url('../img/bg-staff.png');
   &__prev, &__next {
     width: 0;
     height: 0;
@@ -35,7 +34,10 @@
       margin-top: 0;
     }
     &--active {
-      background-color: rgba(0, 255, 255, .15);
+      background-color: rgba(0, 255, 255, .25);
+    }
+    &--inactive {
+      background-color: rgba(0, 255, 255, .1);
     }
   }
   &__num {

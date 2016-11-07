@@ -22,7 +22,7 @@
         <!-- /frame__body box box--dark -->
         <!-- frame__body staff -->
         <div class="frame__body staff" v-if="isActiveStaff">
-          <ul id="js-staff-list" class="staff__list" v-on:scroll="listScrollHandler">
+          <ul class="staff__list" v-on:scroll="listScrollHandler" ref="staffList">
             <li class="staff__item staff__item--active" v-for="staffData in staffDatas">
               <div class="media">
                 <div class="media__img media__img--border">
@@ -36,6 +36,8 @@
               </div>
               <span class="staff__num">0{{ staffData.index }}</span>
             </li>
+            <li class="staff__item staff__item--inactive" v-if="isActiveStaff02">
+            <li class="staff__item staff__item--inactive" v-if="isActiveStaff03">
           </ul>
           <span class="staff__prev" v-if="isActivePrev" v-on:click="listPrevClickHandler"></span>
           <span class="staff__next" v-if="isActiveNext" v-on:click="listNextClickHandler"></span>
@@ -83,7 +85,9 @@ export default {
       isActiveStaff: false,
       isActiveBox: true,
       isActivePrev: false,
-      isActiveNext: false
+      isActiveNext: false,
+      isActiveStaff02: false,
+      isActiveStaff03: false
     };
   },
   init () {
@@ -122,35 +126,15 @@ export default {
     },
 
     // prevクリック時のイベント
-    listPrevClickHandler (e) {
-      const siblings = e.target.parentNode.children;
-
-      let staffList = '';
-
-      for (let i = 0, length = siblings.length; i < length; i++) {
-        if (siblings[i].id === 'js-staff-list') {
-          staffList = siblings[i];
-        }
-      }
-
+    listPrevClickHandler () {
       // とりあえず一番上までスクロールしちゃう仕様
-      staffList.scrollTop = 0;
+      this.$refs.staffList.scrollTop = 0;
     },
 
     // nextクリック時のイベント
-    listNextClickHandler (e) {
-      const siblings = e.target.parentNode.children;
-
-      let staffList = '';
-
-      for (let i = 0, length = siblings.length; i < length; i++) {
-        if (siblings[i].id === 'js-staff-list') {
-          staffList = siblings[i];
-        }
-      }
-
+    listNextClickHandler () {
       // とりあえず一番下までスクロールしちゃう仕様
-      staffList.scrollTop = staffList.scrollHeight - 350;
+      this.$refs.staffList.scrollTop = this.$refs.staffList.scrollHeight - 350;
     },
 
     // すべての上司情報を取得
@@ -181,7 +165,7 @@ export default {
             // 上司待ちを登録
             // this.registerStaff('seki-may');
             // 上司待ちを解除
-            // this.unregisterStaff('seki-may');
+            // this.unregisterStaff('iwata-na');
 
 
             // 上司を待っている部下を取得
@@ -304,6 +288,9 @@ export default {
       // 部下情報を表示
       this.isActiveStaff = true;
 
+      // 空枠表示切り替え
+      this.switchInActiveStaffItem(staffLength)
+
       if (staffLength > 3) {
         // 矢印初期表示
         this.isActiveNext = true;
@@ -315,6 +302,20 @@ export default {
 
       // 早押しボタン表示
       this.isActiveBottomButton = true;
+    },
+
+    // 空枠表示切り替え
+    switchInActiveStaffItem(staffLength) {
+      if (staffLength === 1) {
+        this.isActiveStaff02 = true;
+        this.isActiveStaff03 = true;
+      } else if (staffLength === 2) {
+        this.isActiveStaff02 = false;
+        this.isActiveStaff03 = true;
+      } else {
+        this.isActiveStaff02 = false;
+        this.isActiveStaff03 = false;
+      }
     },
 
     addIndex (staffData) {

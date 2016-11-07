@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul id="js-nav" class="navigation">
-      <li id="js-boss-info" class="navigation__item" v-bind:class="{ 'is-hidden': isHiddenBossInFo }">
+      <li id="js-boss-info" class="navigation__item" v-if="isActiveBossInFo">
         <div class="media">
           <div class="media__img">
             <img v-bind:src="bossInfo.img" width="50" height="50" alt="">
@@ -12,7 +12,7 @@
           </div>
         </div>
       </li>
-      <li class="navigation__item" v-bind:class="{ 'is-hidden': isHiddenSchedule }">
+      <li class="navigation__item" v-if="isActiveSchedule">
         <div class="time">
           <div class="time__headline">
             <p class="time__en">SCHEDULE</p>
@@ -38,15 +38,15 @@ export default {
   props: ['bossInfo'],
   data () {
     return {
-      isHiddenBossInFo: true,
-      isHiddenSchedule: true
+      isActiveBossInFo: false,
+      isActiveSchedule: false
     };
   },
   created () {
     // 上司情報の挿入を検知
     this.$watch('bossInfo', () => {
-      this.isHiddenBossInFo = false;
-      this.isHiddenSchedule = false;
+      this.isActiveBossInFo = true;
+      this.isActiveSchedule = true;
     });
 
     // 時間の変更を検知
@@ -62,10 +62,10 @@ export default {
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
         // success callback
-        console.log(response);
+        // console.log(response);
       }, (response) => {
         // error callback
-        console.log(response);
+        // console.log(response);
       });
     },
 
