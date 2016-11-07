@@ -60,8 +60,6 @@ export default {
         start_datetime: ISOString
       };
 
-      console.log(updateInfo);
-
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
         // success callback
         console.log(response);

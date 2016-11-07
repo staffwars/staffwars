@@ -103,11 +103,11 @@ export default {
       // MilkCocoa
       // const MilkCocoa = require('milkcocoa');
       const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
-      // const ds = milkcocoa.dataStore('messages');
-      //
-      // ds.on('post', function(data) {
-      //   console.log(data);
-      // });
+      const ds = milkcocoa.dataStore('messages');
+
+      ds.on('post', (data) => {
+        console.log(data);
+      });
 
       console.log('start');
 
@@ -155,12 +155,6 @@ export default {
 
     // すべての上司情報を取得
     getBossesData () {
-      // const xhr = new XMLHttpRequest();
-      //
-      // xhr.open('GET', 'https://staffwars.azurewebsites.net/api/boss/', false);
-      // xhr.send(null);
-      //
-      // return JSON.parse(xhr.responseText);
       this.$http.get('https://staffwars.azurewebsites.net/api/boss/').then((response) => {
           // success callback
           const bossData = this.getBossData(response.data, this.id);
@@ -180,6 +174,15 @@ export default {
 
             // frame下ステータスをリセット
             this.bottom_status = '';
+
+            /*
+             * テスト用コード
+             */
+            // 上司待ちを登録
+            // this.registerStaff('seki-may');
+            // 上司待ちを解除
+            // this.unregisterStaff('seki-may');
+
 
             // 上司を待っている部下を取得
             this.getWaitStaff();
@@ -217,19 +220,44 @@ export default {
 
     // 上司を待っている部下を取得
     getWaitStaff () {
-      // this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`).then((response) => {
-      //   // success callback
-      //   this.countWaitStaff(response);
-      // }, (response) => {
-      //   // error callback
-      // });
-
-      // 待ちありテスト用
-      this.$http.get('sample/staffList.json').then((response) => {
+      this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`).then((response) => {
         // success callback
+        // console.log(response);
         this.countWaitStaff(response);
       }, (response) => {
         // error callback
+      });
+    },
+
+    // 上司待ちを登録（テスト用）
+    registerStaff(code) {
+      const body = {
+        "code": code
+      };
+
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`, body).then((response) => {
+        // success callback
+        // console.log(response);
+        this.countWaitStaff(response);
+      }, (response) => {
+        // error callback
+        // console.log(response);
+      });
+    },
+
+    // 上司待ちを解除
+    unregisterStaff(code) {
+      const body = {
+        "code": code
+      };
+
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/unregist/`, body).then((response) => {
+        // success callback
+        // console.log(response);
+        this.countWaitStaff(response);
+      }, (response) => {
+        // error callback
+        // console.log(response);
       });
     },
 
@@ -237,8 +265,6 @@ export default {
     countWaitStaff (response) {
       const staffData = response.data.data;
       const staffLength = staffData.length;
-
-      // console.log(`待ち人数${staffLength}`);
 
       if (staffLength === 0) { // 待ちなし
         if (this.staffLength !== staffData.length) { // 待ち人数が変化していたら
