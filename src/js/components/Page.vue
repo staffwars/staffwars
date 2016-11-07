@@ -9,9 +9,9 @@
         <div class="frame__body box box--dark" v-if="isActiveBox">
           <div class="box__container">
             <!-- form -->
-            <form method="get" v-if="isActiveForm">
-              <input type="text" placeholder="your id" v-model="id" v-bind:value="id">
-              <button type="button" v-on:click="loginClickHandler">ログイン</button>
+            <form class="login" v-if="isActiveForm" v-on:submit="loginClickHandler">
+              <input type="text" placeholder="your id" class="login__text" v-model="id" v-bind:value="id">
+              <input type="submit" value="ログイン" class="login__submit">
             </form>
             <!-- /form -->
             <!-- logo -->
@@ -52,7 +52,6 @@
           <span class="button__left button__left--2"></span>
           <span class="button__right button__right--1"></span>
           <span class="button__right button__right--2"></span>
-          <!-- <button type="button" class="button__body" onclick="start(1);">早押開始</button> -->
           <button type="button" class="button__body" v-on:click="startClickHandler">早押開始</button>
         </div>
         <!-- /frame__bottom button button--accent -->
@@ -93,7 +92,8 @@ export default {
   },
   methods: {
     // ログインボタンクリック時のイベント
-    loginClickHandler () {
+    loginClickHandler (e) {
+      e.preventDefault();
       // すべての上司情報を取得
       this.getBossesData();
     },
@@ -193,7 +193,7 @@ export default {
             }, 5000);
           } else {
             // エラー文表示
-            this.bottom_status = 'codeが存在しません';
+            this.bottom_status = 'idが存在しません';
           }
         }, (response) => {
           // error callback
@@ -383,6 +383,7 @@ export default {
 @import "../../scss/module/frame";
 @import "../../scss/module/box";
 @import "../../scss/module/status";
+@import "../../scss/module/login";
 @import "../../scss/module/button";
 @import "../../scss/module/staff";
 @import "../../scss/module/media";
