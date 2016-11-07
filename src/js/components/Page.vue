@@ -18,7 +18,7 @@
     </div>
     <div class="frame">
       <div class="frame__container">
-        <p class="frame__status">{{ top_status }}</p>
+        <p class="frame__status">{{ topStatus }}</p>
         <!-- frame__body box box--dark -->
         <div class="frame__body box box--dark" v-if="isActiveBox">
           <div class="box__container">
@@ -59,7 +59,7 @@
         <!-- /frame__body staff -->
         <!-- frame__bottom status -->
         <div class="frame__bottom status" v-if="isActiveBottomStatus">
-          <p class="status__text">{{ bottom_status }}</p>
+          <p class="status__text">{{ bottomStatus }}</p>
         </div>
         <!-- /frame__bottom status -->
         <!-- frame__bottom button button--accent -->
@@ -87,8 +87,8 @@ export default {
   },
   data () {
     return {
-      top_status: 'ログイン（仮）',
-      bottom_status: '',
+      topStatus: 'ログイン（仮）',
+      bottomStatus: '',
       id: '',
       bossInfo: {},
       staffDatas: [],
@@ -223,11 +223,8 @@ export default {
               time: this.formatStartTime(bossData.start_datetime)
             };
 
-            // ログインフォーム非表示
-            this.isActiveForm = false;
-
-            // frame下ステータスをリセット
-            this.bottom_status = '';
+            // ログイン画面のモジュールを非表示に
+            this.hiddenLoginModule();
 
             // 上司を待っている部下を取得
             this.getWaitStaff();
@@ -241,12 +238,23 @@ export default {
             this.isActiveTest = true;
           } else {
             // エラー文表示
-            this.bottom_status = 'idが存在しません';
+            this.bottomStatus = 'idが存在しません';
           }
         }, (response) => {
           // error callback
           console.log(response);
         });
+    },
+
+    // ログイン画面のモジュールを非表示に
+    hiddenLoginModule() {
+      this.topStatus = '';
+
+      // ログインフォーム非表示
+      this.isActiveForm = false;
+
+      // frame下ステータスをリセット
+      this.bottomStatus = '';
     },
 
     // 特定の上司情報を取得
@@ -289,34 +297,66 @@ export default {
           this.staffLength = staffData.length;
 
           // 0人画面表示
-          this.showNostaffPage();
+          this.setNostaffModule();
         }
       } else { // 待ちあり
         if (this.staffLength !== staffData.length) { // 待ち人数が変化していたら
           // 待ち人数を更新
           this.staffLength = staffData.length;
 
-          this.showStaffPage(staffData, staffData.length);
+          this.setStaffModule(staffData, staffData.length);
         }
       }
     },
 
+    // 待ちなし画面設定
+    setNostaffModule () {
+      this.hiddenStaffModule();
+      this.showNostaffModule();
+    },
+
+    // 待ちあり画面設定
+    setStaffModule (staffData, staffLength) {
+      this.hiddenNoStaffModule();
+      this.showStaffModule(staffData, staffLength);
+    },
+
     // 待ちなし画面表示
-    showNostaffPage () {
-      this.top_status = 'あなたを待っている部下はいません';
-      this.bottom_status = '部下エントリー受付中…';
+    showNostaffModule () {
+      // 画面上ステータス更新
+      this.topStatus = 'あなたを待っている部下はいません';
+
+      // 画面下ステータス更新・表示
+      this.bottomStatus = '部下エントリー受付中…';
+      this.isActiveBottomStatus = true;
+
+      // box表示
+      this.isActiveBox = true;
+
+      // ロゴ表示
       this.isActiveLogo = true;
     },
 
-    // 待ちあり画面
-    showStaffPage (staffData, staffLength) {
-      this.top_status = `あなたを待っている部下が${staffLength}人います`;
-
-      // index番号を追加した部下情報をdataに追加
-      this.staffDatas = this.addIndex(staffData);
+    // 待ちなし画面非表示
+    hiddenNoStaffModule () {
+      // 画面下ステータスリセット
+      this.isActiveBottomStatus = false;
+      this.bottomStatus = '';
 
       // boxを非表示に
       this.isActiveBox = false;
+
+      // ロゴ非表示
+      this.isActiveLogo = false;
+    },
+
+    // 待ちあり画面表示
+    showStaffModule (staffData, staffLength) {
+      // 画面上ステータス更新
+      this.topStatus = `あなたを待っている部下が${staffLength}人います`;
+
+      // index番号を追加した部下情報をdataに追加
+      this.staffDatas = this.addIndex(staffData);
 
       // 部下情報を表示
       this.isActiveStaff = true;
@@ -324,17 +364,28 @@ export default {
       // 空枠表示切り替え
       this.switchInActiveStaffItem(staffLength);
 
+      // 矢印表示切り替え
       if (staffLength > 3) {
-        // 矢印初期表示
         this.isActiveNext = true;
+      } else {
+        this.isActiveNext = false;
       }
-
-      // 画面下ステータスをリセット
-      this.isActiveBottomStatus = false;
-      this.bottom_status = '';
 
       // 早押しボタン表示
       this.isActiveBottomButton = true;
+    },
+
+    // 待ちあり画面非表示
+    hiddenStaffModule () {
+      // 画面下ステータス非表示・リセット
+      this.isActiveBottomStatus = false;
+      this.bottomStatus = '';
+
+      // 部下一覧非表示
+      this.isActiveStaff = false;
+
+      // ボタン非表示
+      this.isActiveBottomButton = false;
     },
 
     // 空枠表示切り替え

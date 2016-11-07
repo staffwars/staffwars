@@ -18,11 +18,7 @@
   &__form {
     margin-top: 20px;
   }
-  &__reset {
-    border: none;
-    background-color: #fff;
-  }
-  &__submit {
+  &__reset, &__submit {
     border: none;
     background-color: #fff;
   }
