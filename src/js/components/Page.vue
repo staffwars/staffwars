@@ -2,6 +2,20 @@
 
 <template>
   <div id="page" class="bg">
+    <div class="testModal" v-if="isActiveTest">
+      <span class="testModal__close" v-on:click="closeClickHandler">×</span>
+      <p class="testModal__text">てすとつーる</p>
+      <form action="" class="testModal__form" v-on:submit="registerSubmitHandler" v-on:reset="registerResetHandler">
+        <select name="code" class="testModal__select" v-model="staffCode" v-bind:value="staffCode">
+          <option value="iwata-na">iwata-na</option>
+          <option value="kaifuku">kaifuku</option>
+          <option value="seki-may">seki-may</option>
+          <option value="matsumura-s">matsumura-s</option>
+        </select>
+        <input type="reset" value="上司待ち解除" class="testModal__reset">
+        <input type="submit" value="上司待ち登録" class="testModal__submit">
+      </form>
+    </div>
     <div class="frame">
       <div class="frame__container">
         <p class="frame__status">{{ top_status }}</p>
@@ -9,7 +23,7 @@
         <div class="frame__body box box--dark" v-if="isActiveBox">
           <div class="box__container">
             <!-- form -->
-            <form class="login" v-if="isActiveForm" v-on:submit="loginClickHandler">
+            <form class="login" v-if="isActiveForm" v-on:submit="loginSubmitHandler">
               <input type="text" placeholder="your id" class="login__text" v-model="id" v-bind:value="id">
               <input type="submit" value="ログイン" class="login__submit">
             </form>
@@ -87,7 +101,10 @@ export default {
       isActivePrev: false,
       isActiveNext: false,
       isActiveStaff02: false,
-      isActiveStaff03: false
+      isActiveStaff03: false,
+      // テスト用
+      staffCode: 'iwata-na',
+      isActiveTest: false
     };
   },
   init () {
@@ -95,9 +112,62 @@ export default {
     this.staffLength = null;
   },
   methods: {
-    // ログインボタンクリック時のイベント
-    loginClickHandler (e) {
+    // 上司待ち登録イベント（テスト用）
+    registerSubmitHandler (e) {
       e.preventDefault();
+
+      // 上司待ちを登録
+      this.registerStaff(this.staffCode);
+    },
+
+      // 上司待ち解除イベント（テスト用）
+    registerResetHandler (e) {
+      e.preventDefault();
+
+      // 上司待ちを解除
+      this.unregisterStaff(this.staffCode);
+    },
+
+    // 閉じるイベント（テスト用）
+    closeClickHandler () {
+      this.isActiveTest = false;
+    },
+
+    // 上司待ちを登録（テスト用）
+    registerStaff(code) {
+      const body = {
+        code: code
+      };
+
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`, body).then((response) => {
+        // success callback
+        this.countWaitStaff(response);
+        console.log(response);
+      }, (response) => {
+        // error callback
+        console.log(response);
+      });
+    },
+
+    // 上司待ちを解除（テスト用）
+    unregisterStaff(code) {
+      const body = {
+        code: code
+      };
+
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/unregist/`, body).then((response) => {
+        // success callback
+        this.countWaitStaff(response);
+      }, (response) => {
+        // error callback
+        console.log(response);
+      });
+    },
+
+    // ログインボタンクリック時のイベント
+    loginSubmitHandler (e) {
+      e.preventDefault();
+
       // すべての上司情報を取得
       this.getBossesData();
     },
@@ -159,15 +229,6 @@ export default {
             // frame下ステータスをリセット
             this.bottom_status = '';
 
-            /*
-             * テスト用コード
-             */
-            // 上司待ちを登録
-            // this.registerStaff('seki-may');
-            // 上司待ちを解除
-            // this.unregisterStaff('iwata-na');
-
-
             // 上司を待っている部下を取得
             this.getWaitStaff();
 
@@ -175,6 +236,9 @@ export default {
             setInterval(() => {
               this.getWaitStaff();
             }, 5000);
+
+            // テスト用フォーム表示
+            this.isActiveTest = true;
           } else {
             // エラー文表示
             this.bottom_status = 'idが存在しません';
@@ -206,36 +270,6 @@ export default {
     // 上司を待っている部下を取得
     getWaitStaff () {
       this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`).then((response) => {
-        // success callback
-        this.countWaitStaff(response);
-      }, (response) => {
-        // error callback
-        console.log(response);
-      });
-    },
-
-    // 上司待ちを登録（テスト用）
-    registerStaff(code) {
-      const body = {
-        code: code
-      };
-
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/regist/`, body).then((response) => {
-        // success callback
-        this.countWaitStaff(response);
-      }, (response) => {
-        // error callback
-        console.log(response);
-      });
-    },
-
-    // 上司待ちを解除
-    unregisterStaff(code) {
-      const body = {
-        code: code
-      };
-
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.id}/unregist/`, body).then((response) => {
         // success callback
         this.countWaitStaff(response);
       }, (response) => {
@@ -394,4 +428,6 @@ export default {
 @import "../../scss/module/button";
 @import "../../scss/module/staff";
 @import "../../scss/module/media";
+// テスト用
+@import "../../scss/module/testModal";
 </style>
