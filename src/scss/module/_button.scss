@@ -9,11 +9,13 @@
     position: absolute;
     &--1 {
       left: 32px;
-      opacity: .6;
+      // opacity: .6;
+      animation: button1 2s ease infinite;
     }
     &--2 {
       left: 0;
-      opacity: .2;
+      // opacity: .2;
+      animation: button2 2s ease infinite;
     }
   }
   &__right {
@@ -21,11 +23,13 @@
     position: absolute;
     &--1 {
       right: 32px;
-      opacity: .6;
+      // opacity: .6;
+      animation: button1 2s ease infinite;
     }
     &--2 {
       right: 0;
-      opacity: .2;
+      // opacity: .2;
+      animation: button2 2s ease infinite;
     }
   }
   &__body {
@@ -90,5 +94,23 @@
     .button__right {
       @include sprite($arrow-right-primary);
     }
+  }
+}
+
+@keyframes button1 {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: .6
+  }
+}
+
+@keyframes button2 {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: .2
   }
 }

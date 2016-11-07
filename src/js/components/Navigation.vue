@@ -1,7 +1,7 @@
 <template>
   <nav>
     <ul id="js-nav" class="navigation">
-      <li id="js-boss-info" class="navigation__item" v-if="isActiveBossInFo">
+      <li id="js-boss-info" class="navigation__item mg-88r" v-if="isActiveBossInFo">
         <div class="media">
           <div class="media__img">
             <img v-bind:src="bossInfo.img" width="50" height="50" alt="">
@@ -12,7 +12,7 @@
           </div>
         </div>
       </li>
-      <li class="navigation__item" v-if="isActiveSchedule">
+      <li class="navigation__item mg-117r" v-if="isActiveSchedule">
         <div class="time">
           <div class="time__headline">
             <p class="time__en">SCHEDULE</p>

@@ -11,11 +11,5 @@
   justify-content: center;
   flex-wrap: wrap;
   &__item {
-    &:first-child {
-      margin-right: 88px;
-    }
-    &:nth-child(2) {
-      margin-right: 117px;
-    }
   }
 }

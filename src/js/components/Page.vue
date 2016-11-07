@@ -106,13 +106,13 @@ export default {
     startClickHandler () {
       // MilkCocoa
       // const MilkCocoa = require('milkcocoa');
-      const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
-      const ds = milkcocoa.dataStore('messages');
-
-      ds.on('post', (data) => {
-        console.log(data);
-      });
-
+      // const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
+      // const ds = milkcocoa.dataStore('messages');
+      //
+      // ds.on('post', (data) => {
+      //   console.log(data);
+      // });
+      //
       console.log('start');
 
       // 早押し開始
