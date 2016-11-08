@@ -1,6 +1,7 @@
 @charset "utf-8";
 
 .counter {
+  display: block;
   &--1 {
     @include sprite($counter-1);
   }

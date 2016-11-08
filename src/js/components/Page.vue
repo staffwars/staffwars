@@ -1,7 +1,14 @@
 <!-- あとでコンポーネントをもっと細かい単位で分割したい… -->
 
+<!-- 00: ログイン画面 -->
+<!-- 01: 待ちなし画面 -->
+<!-- 02~03: 待ちあり画面 -->
+<!-- 04: カウントダウン画面 -->
+<!-- 05: 結果画面 -->
+
 <template>
   <div id="page" class="bg">
+    <!-- てすとつーる -->
     <div class="testModal" v-if="isActiveTest">
       <span class="testModal__close" v-on:click="closeClickHandler">×</span>
       <p class="testModal__text">てすとつーる</p>
@@ -16,63 +23,128 @@
         <input type="submit" value="上司待ち登録" class="testModal__submit">
       </form>
     </div>
+    <!-- /てすとつーる -->
+
+    <!-- frame -->
     <div class="frame">
+      <!-- frame__container -->
       <div class="frame__container">
         <p class="frame__status">{{ topStatus }}</p>
-        <!-- frame__body box box--dark -->
-        <div class="frame__body box box--dark" v-if="isActiveBox">
-          <div class="box__container">
-            <!-- form -->
-            <form class="login" v-if="isActiveForm" v-on:submit="loginSubmitHandler">
-              <input type="text" placeholder="your id" class="login__text" v-model="id" v-bind:value="id">
-              <input type="submit" value="ログイン" class="login__submit">
-            </form>
-            <!-- /form -->
-            <!-- logo -->
-            <h1 v-if="isActiveLogo"><img src="img/logo.png" width="228" height="92" alt="全社員早押上司争奪戦"></h1>
-            <!-- /logo -->
+        <!-- frame__body -->
+        <div class="frame__body">
+
+          <!-- 00,01,04 -->
+          <!-- box -->
+          <div class="box box--dark" v-if="isActiveBox">
+            <div class="box__container">
+              <!-- 00 -->
+              <form class="login" v-if="isActiveForm" v-on:submit="loginSubmitHandler">
+                <input type="text" placeholder="your id" class="login__text" v-model="id" v-bind:value="id">
+                <input type="submit" value="ログイン" class="login__submit">
+              </form>
+              <!-- /00 -->
+              <!-- 01 -->
+              <h1 v-if="isActiveLogo"><img src="img/logo.png" width="228" height="92" alt="全社員早押上司争奪戦"></h1>
+              <!-- /01 -->
+              <!-- 04 -->
+              <!-- <span class="counter counter--10"></span> -->
+              <!-- /04 -->
+            </div>
           </div>
-        </div>
-        <!-- /frame__body box box--dark -->
-        <!-- frame__body staff -->
-        <div class="frame__body staff" v-if="isActiveStaff">
-          <ul class="staff__list" v-on:scroll="listScrollHandler" ref="staffList">
-            <li class="staff__item staff__item--active" v-for="staffData in staffDatas">
-              <div class="media">
-                <div class="media__img media__img--border">
-                  <img v-bind:src="'img/' + staffData.code + '.png'" width="80" height="80" v-bind:alt="staffData.name">
-                </div>
-                <div class="media__text">
-                  <p class="txt-s txt-primary">STAFF:0{{ staffData.index }}</p>
-                  <p class="txt-s mg-8t">{{ staffData.organization }}</p>
-                  <p class="txt-l mg-3t">{{ staffData.name }}</p>
-                </div>
+          <!-- /box -->
+          <!-- 00,01,04 -->
+
+          <!-- 05 -->
+          <!-- box -->
+          <!-- <div class="box box--bright">
+            <div class="box__contaner">
+              <img src="img/winner.png" width="120" height="23" alt="WINNER">
+              <p class="txt-m mg-13t">Z14推進機関 第一開発部 エンジニア</p>
+              <p class="txt-xxl txt-bold mg-5t">岩田 直樹</p>
+              <div class="box__table">
+                <table class="resultTable mg-20t">
+                  <caption class="resultTable__caption">RESULT</caption>
+                  <tr>
+                    <td class="resultTable__td resultTable__rank">1</td>
+                    <td class="resultTable__td resultTable__name">岩田直樹</td>
+                    <td class="resultTable__td resultTable__time">00.01.00</td>
+                  </tr>
+                  <tr>
+                    <td class="resultTable__td resultTable__rank">2</td>
+                    <td class="resultTable__td resultTable__name">ぐる ナビ子</td>
+                    <td class="resultTable__td resultTable__time">00.02.00</td>
+                  </tr>
+                  <tr>
+                    <td class="resultTable__td resultTable__rank">3</td>
+                    <td class="resultTable__td resultTable__name">小山田 花子</td>
+                    <td class="resultTable__td resultTable__time">00.05.50</td>
+                  </tr>
+                </table>
               </div>
-              <span class="staff__num">0{{ staffData.index }}</span>
-            </li>
-            <li class="staff__item staff__item--inactive" v-if="isActiveStaff02">
-            <li class="staff__item staff__item--inactive" v-if="isActiveStaff03">
-          </ul>
-          <span class="staff__prev" v-if="isActivePrev" v-on:click="listPrevClickHandler"></span>
-          <span class="staff__next" v-if="isActiveNext" v-on:click="listNextClickHandler"></span>
+            </div>
+          </div> -->
+          <!-- /box -->
+          <!-- frame__bottom -->
+          <!-- <div class="frame__bottom button button--primary">
+            <span class="button__left button__left--1"></span>
+            <span class="button__left button__left--2"></span>
+            <span class="button__right button__right--1"></span>
+            <span class="button__right button__right--2"></span>
+            <button type="button" class="button__body">RESET</button>
+          </div> -->
+          <!-- /frame__bottom -->
+          <!-- 05 -->
+
+          <!-- 02,03 -->
+          <!-- staff -->
+          <div class="staff" v-if="isActiveStaff">
+            <ul class="staff__list" v-on:scroll="listScrollHandler" ref="staffList">
+              <li class="staff__item staff__item--active" v-for="staffData in staffDatas">
+                <div class="media">
+                  <div class="media__img media__img--border">
+                    <img v-bind:src="'img/' + staffData.code + '.png'" width="80" height="80" v-bind:alt="staffData.name">
+                  </div>
+                  <div class="media__text">
+                    <p class="txt-s txt-primary">STAFF:0{{ staffData.index }}</p>
+                    <p class="txt-s mg-8t">{{ staffData.organization }}</p>
+                    <p class="txt-l mg-3t">{{ staffData.name }}</p>
+                  </div>
+                </div>
+                <span class="staff__num">0{{ staffData.index }}</span>
+              </li>
+              <li class="staff__item staff__item--inactive" v-if="isActiveStaff02">
+              <li class="staff__item staff__item--inactive" v-if="isActiveStaff03">
+            </ul>
+            <span class="staff__prev" v-if="isActivePrev" v-on:click="listPrevClickHandler"></span>
+            <span class="staff__next" v-if="isActiveNext" v-on:click="listNextClickHandler"></span>
+          </div>
+          <!-- /staff -->
+          <!-- /02,03 -->
+
+          <!-- frame__bottom -->
+          <div class="frame__bottom">
+            <!-- 00,01,04 -->
+            <div class="status" v-if="isActiveBottomStatus">
+              <p class="status__text">{{ bottomStatus }}</p>
+            </div>
+            <!-- /00,01,04 -->
+            <!-- 02~03 -->
+            <div class="button button--accent" v-if="isActiveBottomButton">
+              <span class="button__left button__left--1"></span>
+              <span class="button__left button__left--2"></span>
+              <span class="button__right button__right--1"></span>
+              <span class="button__right button__right--2"></span>
+              <button type="button" class="button__body" v-on:click="startClickHandler">早押開始</button>
+            </div>
+            <!-- /02~03 -->
+          </div>
+          <!-- /frame__bottom -->
         </div>
-        <!-- /frame__body staff -->
-        <!-- frame__bottom status -->
-        <div class="frame__bottom status" v-if="isActiveBottomStatus">
-          <p class="status__text">{{ bottomStatus }}</p>
-        </div>
-        <!-- /frame__bottom status -->
-        <!-- frame__bottom button button--accent -->
-        <div class="frame__bottom button button--accent" v-if="isActiveBottomButton">
-          <span class="button__left button__left--1"></span>
-          <span class="button__left button__left--2"></span>
-          <span class="button__right button__right--1"></span>
-          <span class="button__right button__right--2"></span>
-          <button type="button" class="button__body" v-on:click="startClickHandler">早押開始</button>
-        </div>
-        <!-- /frame__bottom button button--accent -->
+        <!-- frame__body -->
       </div>
+      <!-- /frame__container -->
     </div>
+    <!-- /frame -->
     <navigation v-bind:bossInfo="bossInfo"></navigation>
   </div>
 </template>
@@ -248,6 +320,10 @@ export default {
 
     // ログイン画面のモジュールを非表示に
     hiddenLoginModule() {
+      // box非表示
+      this.isActiveBox = false;
+
+      // 画面上ステータスリセット
       this.topStatus = '';
 
       // ログインフォーム非表示
@@ -479,6 +555,7 @@ export default {
 @import "../../scss/module/button";
 @import "../../scss/module/staff";
 @import "../../scss/module/media";
+@import "../../scss/module/counter";
 // テスト用
 @import "../../scss/module/testModal";
 </style>
