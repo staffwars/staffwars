@@ -79,18 +79,18 @@
         <!-- staff -->
         <div class="staff" v-if="isActiveStaff">
           <ul class="staff__list" @scroll="listScrollHandler" ref="staffList">
-            <li class="staff__item staff__item--active" v-for="staffData in staffDatas">
+            <li class="staff__item staff__item--active" v-for="(staffData, index) in staffDatas">
               <div class="media">
                 <div class="media__img media__img--border">
                   <img v-bind:src="'img/' + staffData.code + '.png'" width="80" height="80" v-bind:alt="staffData.name">
                 </div>
                 <div class="media__text">
-                  <p class="txt-s txt-primary">STAFF:0{{ staffData.index }}</p>
+                  <p class="txt-s txt-primary">STAFF:0{{ index + 1 }}</p>
                   <p class="txt-s mg-8t">{{ staffData.organization }}</p>
                   <p class="txt-l mg-3t">{{ staffData.name }}</p>
                 </div>
               </div>
-              <span class="staff__num">0{{ staffData.index }}</span>
+              <span class="staff__num">0{{ index + 1 }}</span>
             </li>
             <li class="staff__item staff__item--inactive" v-if="isActiveStaff02">
             <li class="staff__item staff__item--inactive" v-if="isActiveStaff03">
@@ -359,8 +359,8 @@ export default {
       // 画面上ステータス更新
       this.topStatus = `あなたを待っている部下が${staffLength}人います`;
 
-      // index番号を追加した部下情報をdataに追加
-      this.staffDatas = this.addIndex(staffData);
+      // 部下情報をdataに追加
+      this.staffDatas = staffData;
 
       // 部下情報を表示
       this.isActiveStaff = true;
@@ -404,13 +404,6 @@ export default {
         this.isActiveStaff02 = false;
         this.isActiveStaff03 = false;
       }
-    },
-
-    addIndex (staffData) {
-      for (let i = 0, length = staffData.length; i < length; i++) {
-        staffData[i].index = i + 1;
-      }
-      return staffData;
     },
 
     // 早押し開始
