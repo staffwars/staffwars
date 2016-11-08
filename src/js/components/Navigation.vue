@@ -19,7 +19,7 @@
             <p class="time__ja">着席予定時間</p>
           </div>
           <div class="time__entry">
-            <input type="time" class="time__input"  v-model="bossInfo.time" v-bind:value="bossInfo.time">
+            <input type="time" class="time__input" v-model="bossInfo.time" v-bind:value="bossInfo.time" @input="inputTimeHandler">
           </div>
         </div>
       </li>
@@ -43,18 +43,19 @@ export default {
     };
   },
   created () {
-    // 上司情報の挿入を検知
+    // 上司情報の受け取りを検知
     this.$watch('bossInfo', () => {
       this.isActiveBossInFo = true;
       this.isActiveSchedule = true;
     });
-
-    // 時間の変更を検知
-    this.$watch('bossInfo.time', () => {
-      this.updateStartTime(this.formatInputTime(this.bossInfo.time));
-    });
   },
   methods: {
+    // input timeが変更された時のイベント
+    inputTimeHandler() {
+      this.updateStartTime(this.formatInputTime(this.bossInfo.time));
+    },
+
+    // 時間を更新
     updateStartTime (ISOString) {
       const updateInfo = {
         start_datetime: ISOString

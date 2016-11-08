@@ -1,8 +1,8 @@
 <template>
   <div class="testModal" v-if="isActiveTest">
-    <span class="testModal__close" v-on:click="closeClickHandler">×</span>
+    <span class="testModal__close" @click="closeClickHandler">×</span>
     <p class="testModal__text">てすとつーる</p>
-    <form action="" class="testModal__form" v-on:submit="registerSubmitHandler" v-on:reset="registerResetHandler">
+    <form action="" class="testModal__form" @submit="registerSubmitHandler" v-on:reset="registerResetHandler">
       <select name="code" class="testModal__select" v-model="staffCode" v-bind:value="staffCode">
         <option value="iwata-na">iwata-na</option>
         <option value="kaifuku">kaifuku</option>
@@ -18,11 +18,18 @@
 <script>
 export default {
   name: 'testModal',
-  props: ['isActiveTest', 'bossId'],
+  props: ['bossInfo'],
   data () {
     return {
       staffCode: 'iwata-na',
+      isActiveTest: false
     };
+  },
+  created () {
+    // 上司情報の受け取りを検知
+    this.$watch('bossInfo', () => {
+      this.isActiveTest = true;
+    });
   },
   methods: {
     // 上司待ち登録イベント（テスト用）
@@ -52,9 +59,8 @@ export default {
         code: code
       };
 
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossId}/regist/`, body).then((response) => {
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/regist/`, body).then((response) => {
         // success callback
-        this.$parent.countWaitStaff(response);
         console.log(response);
       }, (response) => {
         // error callback
@@ -68,9 +74,8 @@ export default {
         code: code
       };
 
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossId}/unregist/`, body).then((response) => {
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/unregist/`, body).then((response) => {
         // success callback
-        this.$parent.countWaitStaff(response);
       }, (response) => {
         // error callback
         console.log(response);

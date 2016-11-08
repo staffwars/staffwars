@@ -1,27 +1,42 @@
 <template>
-  <!-- <div id="app"> -->
-    <!-- <hello></hello> -->
-    <page></page>
-  <!-- </div> -->
+  <div id="app" class="bg">
+    <testModal v-bind:bossInfo="bossInfoFromChild"></testModal>
+    <frame @send-from-frame="getBossInfo"></frame>
+    <navigation v-bind:bossInfo="bossInfoFromChild"></navigation>
+  </div>
 </template>
 
 <script>
-// import Hello from './components/Hello.vue'
-import Page from './components/Page.vue';
+import Frame from './components/Frame.vue';
+import Navigation from './components/Navigation.vue';
+import TestModal from './components/TestModal.vue';
 
 export default {
   name: 'app',
   components: {
-    // Hello
-    Page
+    Frame,
+    Navigation,
+    TestModal
+  },
+  data () {
+    return {
+      bossInfoFromChild: ''
+    };
+  },
+  methods: {
+    getBossInfo (value) {
+      this.bossInfoFromChild = value;
+    }
   }
 };
 </script>
 
 <style lang="scss">
 @import "../scss/setting/var";
+@import "../scss/setting/sprite";
 @import "../scss/base/reset";
 @import "../scss/base/default";
+@import "../scss/module/bg";
 @import "../scss/utility/is";
 @import "../scss/utility/mg";
 @import "../scss/utility/txt";
