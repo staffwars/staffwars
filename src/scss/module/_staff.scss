@@ -22,7 +22,10 @@
   }
   &__list {
     height: 350px;
-    overflow: scroll;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   &__item {
     height: 110px;
