@@ -19,7 +19,7 @@
           <div class="box__container">
             <!-- 00 -->
             <form class="login" v-if="isActiveForm" @submit="loginSubmitHandler">
-              <input type="text" placeholder="your id" class="login__text" v-model="bossId">
+              <input type="text" placeholder="your id" class="login__text" autofocus v-model="bossId">
               <input type="submit" value="ログイン" class="login__submit">
             </form>
             <!-- /00 -->

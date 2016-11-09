@@ -18,9 +18,14 @@
             <p class="time__en">SCHEDULE</p>
             <p class="time__ja">着席予定時間</p>
           </div>
-          <div class="time__entry">
-            <input type="time" class="time__input" v-model="bossInfo.time" v-bind:value="bossInfo.time" @input="inputTimeHandler">
-          </div>
+          <form class="time__entry" @submit="submitTimeHandler" @reset="">
+            <label class="time__textLabel">
+              <input type="text" class="time__text" v-model="bossInfo.time" v-bind:value="bossInfo.time" @input="inputTimeHandler">
+            </label>
+            <label class="time__resetLabel">
+              <input type="reset" class="time__reset">
+            </label>
+          </form>
         </div>
       </li>
       <li class="navigation__item">
@@ -48,17 +53,63 @@ export default {
       this.isActiveBossInFo = true;
       this.isActiveSchedule = true;
     });
+
+    this.submitFlag;
   },
   methods: {
-    // input timeが変更された時のイベント
+    // 時間が入力された時のイベント
     inputTimeHandler() {
-      this.updateStartTime(this.formatInputTime(this.bossInfo.time));
+
+      // 前回のinputイベント発火から3秒経っていたら上司情報更新の処理開始
+      clearTimeout(this.submitFlag);
+      this.submitFlag = setTimeout(() => {
+        this.updateStartTime();
+      }, 3000);
     },
 
-    // 時間を更新
-    updateStartTime (ISOString) {
+    // フォームがsubmitされた時のイベント
+    submitTimeHandler (e) {
+      e.preventDefault();
+
+      // タイマー止める
+      clearTimeout(this.submitFlag);
+
+      this.updateStartTime();
+    },
+
+    // リセットボタンが押された時のイベント
+    resetTimeHandler () {
+      // start_datetimeを空にして送る処理
+    },
+
+    // 上司情報の時間を更新
+    updateStartTime () {
+      const validatedTime = this.validateInputTime();
+
+      console.log('validated!');
+      console.log(validatedTime);
+
+      if (validatedTime) {
+        this.sendStartTime(this.formatInputTime(validatedTime));
+      } else {
+        // hh:mm形式で入力してくださいと表示
+      }
+    },
+
+    // 入力された値をvalidate
+    validateInputTime () {
+      const result = this.bossInfo.time.match(/^[0-9]{2}:[0-9]{2}$/);
+
+      if (result) {
+        return result[0];
+      }
+      return null;
+    },
+
+    // 時間送る
+    sendStartTime (timeString) {
       const updateInfo = {
-        start_datetime: ISOString
+        start_datetime: timeString
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
@@ -71,8 +122,9 @@ export default {
     },
 
     // 入力された時間をISO文字列に変換
-    formatInputTime (inputTime) {
-      const splitedTime = inputTime.split(':');
+    formatInputTime (validatedTime) {
+      console.log(validatedTime);
+      const splitedTime = validatedTime.split(':');
       const hour = splitedTime[0];
       const minutes = splitedTime[1];
 

@@ -20,10 +20,8 @@
     display: table-cell;
     vertical-align: middle;
     position: relative;
-    border-radius: 25px;
-    border: solid 1px $color-primary;
-    background-color: #004040;
-    z-index: -1;
+  }
+  &__textLabel {
     &::before {
       display: block;
       content: "";
@@ -35,16 +33,23 @@
       @include sprite($clock);
     }
   }
-  &__input {
+  &__text {
     color: #fefefe;
     font-size: $font-size-xl;
     padding-left: 58px;
     font-weight: bold;
-    width: 168px;
+    width: 170px;
     height: 50px;
+    border-radius: 25px;
+    border: solid 1px $color-primary;
+    background-color: #004040;
     box-sizing: border-box;
-    background: none;
-    border: none;
-    cursor: text;
+  }
+  &__resetLabel {
+
+  }
+  &__reset {
+    // 一旦非表示
+    display: none;
   }
 }

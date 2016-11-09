@@ -2,7 +2,7 @@
   <div class="testModal" v-if="isActiveTest">
     <span class="testModal__close" @click="closeClickHandler">×</span>
     <p class="testModal__text">てすとつーる</p>
-    <form action="" class="testModal__form" @submit="registerSubmitHandler" v-on:reset="registerResetHandler">
+    <form class="testModal__form" @submit="registerSubmitHandler" v-on:reset="registerResetHandler">
       <select name="code" class="testModal__select" v-model="staffCode" v-bind:value="staffCode">
         <option value="iwata-na">iwata-na</option>
         <option value="kaifuku">kaifuku</option>
@@ -76,6 +76,7 @@ export default {
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/unregist/`, body).then((response) => {
         // success callback
+        console.log(response);
       }, (response) => {
         // error callback
         console.log(response);
