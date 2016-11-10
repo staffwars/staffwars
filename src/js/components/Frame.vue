@@ -274,9 +274,25 @@ export default {
 
     // APIから受け取った時間を、hh:mmの文字列に変換
     formatStartTime (ISOString) {
-      const dt = new Date(ISOString);
+      if (ISOString !== '') {
+        const dt = new Date(ISOString);
 
-      return `${dt.getHours()}:${dt.getMinutes()}`;
+        const dtObj = {
+          hours: dt.getHours(),
+          minutes: dt.getMinutes()
+        };
+
+        let time
+
+        for (let key in dtObj) {
+          if (dtObj[key] < 10) {
+            dtObj[key] = '0' + dtObj[key];
+          }
+        }
+
+        return `${dtObj.hours}:${dtObj.minutes}`;
+      }
+      return '';
     },
 
     // 上司を待っている部下を取得
