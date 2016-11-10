@@ -18,14 +18,17 @@
             <p class="time__en">SCHEDULE</p>
             <p class="time__ja">着席予定時間</p>
           </div>
-          <form class="time__entry" @submit="submitTimeHandler" @reset="">
+          <form class="time__entry" @submit="submitTimeHandler" @reset="resetTimeHandler">
             <label class="time__textLabel">
-              <input type="text" class="time__text" v-model="bossInfo.time" v-bind:value="bossInfo.time" @input="inputTimeHandler">
+              <input type="text" class="time__text" placeholder="00:00" ref="timeText" v-model="bossInfo.time" v-bind:value="bossInfo.time" v-bind:class="{ 'time__text--notice': isTimeCautionNotice }" @input="inputTimeHandler">
             </label>
             <label class="time__resetLabel">
-              <input type="reset" class="time__reset">
+              <input type="reset" value="×" class="time__reset" v-if="isActiveReset">
             </label>
           </form>
+          <div class="time__balloon" v-if="isActiveBalloon">
+            <p class="time__caution">正しく時間を入力してください</p>
+          </div>
         </div>
       </li>
       <li class="navigation__item">
@@ -44,27 +47,52 @@ export default {
   data () {
     return {
       isActiveBossInFo: false,
-      isActiveSchedule: false
+      isActiveSchedule: false,
+      isActiveReset: true,
+      isActiveBalloon: false,
+      isTimeCautionNotice: false
     };
   },
   created () {
+    this.submitFlag;
+
     // 上司情報の受け取りを検知
     this.$watch('bossInfo', () => {
       this.isActiveBossInFo = true;
       this.isActiveSchedule = true;
     });
 
-    this.submitFlag;
+    // 時間の変更を検知
+    this.$watch('bossInfo.time', () => {
+      // リセットボタンの表示・非表示を切り替え
+      this.switchResetButton();
+
+      // エラー文非表示
+      this.isActiveBalloon = false;
+
+      // 時間が送られる時のアニメーションをクラスを外す
+      this.isTimeCautionNotice = false;
+    });
   },
   methods: {
+    // リセットボタンの表示・非表示を切り替え
+    switchResetButton () {
+      if (this.bossInfo.time === '') {
+        // リセットボタン非表示
+        this.isActiveReset = false;
+      } else {
+        // リセットボタン表示
+        this.isActiveReset = true;
+      }
+    },
+
     // 時間が入力された時のイベント
     inputTimeHandler() {
-
-      // 前回のinputイベント発火から3秒経っていたら上司情報更新の処理開始
+      // 前回のinputイベント発火から1秒経っていたら上司情報更新の処理開始
       clearTimeout(this.submitFlag);
       this.submitFlag = setTimeout(() => {
         this.updateStartTime();
-      }, 3000);
+      }, 1000);
     },
 
     // フォームがsubmitされた時のイベント
@@ -79,26 +107,35 @@ export default {
 
     // リセットボタンが押された時のイベント
     resetTimeHandler () {
-      // start_datetimeを空にして送る処理
+      // dataを空に
+      this.bossInfo.time = '';
+
+      // start_datetimeを空で送る
+      this.sendStartTime('');
     },
 
     // 上司情報の時間を更新
     updateStartTime () {
-      const validatedTime = this.validateInputTime();
-
-      console.log('validated!');
-      console.log(validatedTime);
-
-      if (validatedTime) {
-        this.sendStartTime(this.formatInputTime(validatedTime));
+      if (this.bossInfo.time === '') { // 入力された値が空だったら
+        // start_datetimeを空で送る
+        this.sendStartTime('');
       } else {
-        // hh:mm形式で入力してくださいと表示
+        // バリデート
+        const validatedTime = this.validateInputTime();
+
+        if (validatedTime) {
+          // 時間をAPIに送る
+          this.sendStartTime(this.formatInputTime(validatedTime));
+        } else {
+          // エラー文表示
+          this.isActiveBalloon = true;
+        }
       }
     },
 
     // 入力された値をvalidate
     validateInputTime () {
-      const result = this.bossInfo.time.match(/^[0-9]{2}:[0-9]{2}$/);
+      const result = this.bossInfo.time.match(/^[0-2][0-9]:[0-5][0-9]$/);
 
       if (result) {
         return result[0];
@@ -106,7 +143,7 @@ export default {
       return null;
     },
 
-    // 時間送る
+    // 時間APIに送る
     sendStartTime (timeString) {
       const updateInfo = {
         start_datetime: timeString
@@ -115,6 +152,12 @@ export default {
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
         // success callback
         console.log(response);
+
+        // 時間がAPIに送られたことを文字色の変化でユーザに伝える
+        this.isTimeCautionNotice = true;
+
+        // フォーカスを外す
+        this.$refs.timeText.blur();
       }, (response) => {
         // error callback
         console.log(response);
@@ -123,7 +166,6 @@ export default {
 
     // 入力された時間をISO文字列に変換
     formatInputTime (validatedTime) {
-      console.log(validatedTime);
       const splitedTime = validatedTime.split(':');
       const hour = splitedTime[0];
       const minutes = splitedTime[1];

@@ -2,6 +2,7 @@
 
 .time {
   display: table;
+  position: relative;
   &__headline {
     display: table-cell;
     vertical-align: middle;
@@ -20,6 +21,31 @@
     display: table-cell;
     vertical-align: middle;
     position: relative;
+  }
+  &__balloon {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    height: 30px;
+    line-height: 30px;
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 10px;
+    padding: 0 20px;
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: solid 5px transparent;
+      border-top: solid 5px rgba(255, 255, 255, .5);
+      right: 30px;
+    }
+  }
+  &__caution {
+    text-align: center;
+    color: $color-accent;
+    font-size: $font-size-s;
   }
   &__textLabel {
     &::before {
@@ -44,12 +70,40 @@
     border: solid 1px $color-primary;
     background-color: #004040;
     box-sizing: border-box;
+    &--notice {
+      animation: notice 1s ease;
+    }
   }
   &__resetLabel {
-
   }
   &__reset {
-    // 一旦非表示
-    display: none;
+    border: none;
+    position: absolute;
+    right: 14px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 255, 255, .25);
+    border-radius: 50%;
+    color: #fff;
+    font-size: $font-size-m;
+    cursor: pointer;
+    padding: 0;
+    box-sizing: border-box;
+    padding-bottom: 2px;
+  }
+}
+
+@keyframes notice {
+  0% {
+    color: #fff
+  }
+  50% {
+    color: #0ff
+  }
+  100% {
+    color: #fff
   }
 }
