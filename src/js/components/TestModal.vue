@@ -1,8 +1,8 @@
 <template>
   <div class="testModal" v-if="isActiveTest">
-    <span class="testModal__close" @click="closeClickHandler">×</span>
+    <span class="testModal__close" @click="clickCloseHandler">×</span>
     <p class="testModal__text">てすとつーる</p>
-    <form class="testModal__form" @submit="registerSubmitHandler" v-on:reset="registerResetHandler">
+    <form class="testModal__form" @submit="submitRegisterHandler" v-on:reset="resetRegisterHandler">
       <select name="code" class="testModal__select" v-model="staffCode" v-bind:value="staffCode">
         <option value="iwata-na">iwata-na</option>
         <option value="kaifuku">kaifuku</option>
@@ -33,15 +33,15 @@ export default {
   },
   methods: {
     // 上司待ち登録イベント（テスト用）
-    registerSubmitHandler (e) {
+    submitRegisterHandler (e) {
       e.preventDefault();
 
       // 上司待ちを登録
       this.registerStaff(this.staffCode);
     },
 
-      // 上司待ち解除イベント（テスト用）
-    registerResetHandler (e) {
+    // 上司待ち解除イベント（テスト用）
+    resetRegisterHandler (e) {
       e.preventDefault();
 
       // 上司待ちを解除
@@ -49,7 +49,7 @@ export default {
     },
 
     // 閉じるイベント（テスト用）
-    closeClickHandler () {
+    clickCloseHandler () {
       this.isActiveTest = false;
     },
 

@@ -18,7 +18,7 @@
         <div class="box box--dark" v-if="isActiveBox">
           <div class="box__container">
             <!-- 00 -->
-            <form class="login" v-if="isActiveForm" @submit="loginSubmitHandler">
+            <form class="login" v-if="isActiveForm" @submit="submitLoginHandler">
               <input type="text" placeholder="your id" class="login__text" autofocus v-model="bossId">
               <input type="submit" value="ログイン" class="login__submit">
             </form>
@@ -78,7 +78,7 @@
         <!-- 02,03 -->
         <!-- staff -->
         <div class="staff" v-if="isActiveStaff">
-          <ul class="staff__list" @scroll="listScrollHandler" ref="staffList">
+          <ul class="staff__list" @scroll="scrollListHandler" ref="staffList">
             <li class="staff__item staff__item--active" v-for="(staffData, index) in staffDatas">
               <div class="media">
                 <div class="media__img media__img--border">
@@ -95,8 +95,8 @@
             <li class="staff__item staff__item--inactive" v-if="isActiveStaff02">
             <li class="staff__item staff__item--inactive" v-if="isActiveStaff03">
           </ul>
-          <span class="staff__prev" v-if="isActivePrev" @click="listPrevClickHandler"></span>
-          <span class="staff__next" v-if="isActiveNext" @click="listNextClickHandler"></span>
+          <span class="staff__prev" v-if="isActivePrev" @click="clickListPrevHandler"></span>
+          <span class="staff__next" v-if="isActiveNext" @click="clickListNextHandler"></span>
         </div>
         <!-- /staff -->
         <!-- /02,03 -->
@@ -114,7 +114,7 @@
             <span class="button__left button__left--2"></span>
             <span class="button__right button__right--1"></span>
             <span class="button__right button__right--2"></span>
-            <button type="button" class="button__body" @click="startClickHandler">早押開始</button>
+            <button type="button" class="button__body" @click="clickStartHandler">早押開始</button>
           </div>
           <!-- /02~03 -->
         </div>
@@ -153,10 +153,12 @@ export default {
   created () {
     // 待ち人数を初期化
     this.staffLength = null;
+
+    this.scrollFlg;
   },
   methods: {
     // ログインボタンクリック時のイベント
-    loginSubmitHandler (e) {
+    submitLoginHandler (e) {
       e.preventDefault();
 
       // すべての上司情報を取得
@@ -164,7 +166,7 @@ export default {
     },
 
     // 早押開始ボタンクリック時のイベント
-    startClickHandler () {
+    clickStartHandler () {
       // MilkCocoa
       // const MilkCocoa = require('milkcocoa');
       // const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
@@ -180,20 +182,24 @@ export default {
       this.requestStart();
     },
 
-    // 部下リストスクロール時のイベント(あとで間引き処理追加)
-    listScrollHandler (e) {
-      // 矢印切り替え
-      this.switchArrow(e.target);
+    // 部下リストスクロール時のイベント
+    scrollListHandler (e) {
+      // 前回のスクロールイベント発火から0.1秒経っていたら矢印切り替え
+      clearTimeout(this.scrollFlg);
+      this.scrollFlg = setTimeout(() => {
+        // 矢印切り替え
+        this.switchArrow(e.target);
+      }, 100);
     },
 
     // prevクリック時のイベント
-    listPrevClickHandler () {
+    clickListPrevHandler () {
       // とりあえず一番上までスクロールしちゃう仕様
       this.$refs.staffList.scrollTop = 0;
     },
 
     // nextクリック時のイベント
-    listNextClickHandler () {
+    clickListNextHandler () {
       // とりあえず一番下までスクロールしちゃう仕様
       this.$refs.staffList.scrollTop = this.$refs.staffList.scrollHeight - 350;
     },
