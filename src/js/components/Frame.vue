@@ -168,13 +168,33 @@ export default {
     // 早押開始ボタンクリック時のイベント
     clickStartHandler () {
       // MilkCocoa
-      // const MilkCocoa = require('milkcocoa');
-      // const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
-      // const ds = milkcocoa.dataStore('messages');
+      //const MilkCocoa = require('milkcocoa');
+      const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
+      const ds = milkcocoa.dataStore('messages');
       //
-      // ds.on('post', (data) => {
-      //   console.log(data);
-      // });
+      ds.on('push', (data) => {
+        console.log(data);
+        switch (data.value.type) {
+          case 'pre_start': // カウントダウン開始５秒前
+            console.log('countdown pre start');
+            break;
+          case 'start': // カウントダウン開始
+            console.log('countdown start');
+            break;
+          case 'pre_finish': // カウントダウン終了５秒前
+            console.log('countdown pre finish');
+            break;
+          case 'finish': // カウントダウン終了＝早押し開始
+            console.log('countdown finish');
+            break;
+          case 'result': // 早押し結果の通知
+            console.log('countdown result');
+            console.log(data.value.result);
+            break;
+          default:
+
+        }
+      });
       //
       console.log('start');
 
