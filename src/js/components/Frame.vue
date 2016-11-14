@@ -27,7 +27,7 @@
             <h1 v-if="isActiveLogo"><img src="img/logo.png" width="228" height="92" alt="全社員早押上司争奪戦"></h1>
             <!-- /01 -->
             <!-- 04 -->
-            <!-- <span class="counter counter--10"></span> -->
+            <span class="counter" v-if="isActiveCounter" v-bind:class="counterObj"></span>
             <!-- /04 -->
           </div>
         </div>
@@ -145,16 +145,31 @@ export default {
       isActivePrev: false,
       isActiveNext: false,
       isActiveStaff02: false,
-      isActiveStaff03: false
-      // テスト用
-      // isActiveTest: false
+      isActiveStaff03: false,
+      isActiveCounter: false,
+      counterObj: {
+        'counter--1': false,
+        'counter--2': false,
+        'counter--3': false,
+        'counter--4': false,
+        'counter--5': false,
+        'counter--6': false,
+        'counter--7': false,
+        'counter--8': false,
+        'counter--9': false,
+        'counter--10': false
+      }
     };
   },
   created () {
     // 待ち人数を初期化
     this.staffLength = null;
 
+
     this.scrollFlg;
+
+
+    this.setMilkcocoa();
   },
   methods: {
     // ログインボタンクリック時のイベント
@@ -167,35 +182,8 @@ export default {
 
     // 早押開始ボタンクリック時のイベント
     clickStartHandler () {
-      // MilkCocoa
-      //const MilkCocoa = require('milkcocoa');
-      const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
-      const ds = milkcocoa.dataStore('messages');
-      //
-      ds.on('push', (data) => {
-        console.log(data);
-        switch (data.value.type) {
-          case 'pre_start': // カウントダウン開始５秒前
-            console.log('countdown pre start');
-            break;
-          case 'start': // カウントダウン開始
-            console.log('countdown start');
-            break;
-          case 'pre_finish': // カウントダウン終了５秒前
-            console.log('countdown pre finish');
-            break;
-          case 'finish': // カウントダウン終了＝早押し開始
-            console.log('countdown finish');
-            break;
-          case 'result': // 早押し結果の通知
-            console.log('countdown result');
-            console.log(data.value.result);
-            break;
-          default:
+      // ローディング中みたいな画面
 
-        }
-      });
-      //
       console.log('start');
 
       // 早押し開始
@@ -222,6 +210,50 @@ export default {
     clickListNextHandler () {
       // とりあえず一番下までスクロールしちゃう仕様
       this.$refs.staffList.scrollTop = this.$refs.staffList.scrollHeight - 350;
+    },
+
+    // push通知受け取り
+    setMilkcocoa() {
+      // MilkCocoa
+      const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
+      const ds = milkcocoa.dataStore('messages');
+
+      ds.on('push', (data) => {
+        console.log(data);
+        switch (data.value.type) {
+          case 'pre_start': // カウントダウン開始５秒前
+            console.log('countdown pre start');
+            break;
+          case 'start': // カウントダウン開始
+            console.log('countdown start');
+
+            // 部下リスト非表示
+            this.hiddenStaffModule();
+
+            // カウントダウン表示
+            this.showCounter();
+
+            // カウントダウン
+            this.countDown();
+          case 'pre_finish': // カウントダウン終了５秒前
+            console.log('countdown pre finish');
+            break;
+          case 'finish': // カウントダウン終了＝早押し開始
+            console.log('countdown finish');
+
+            // カウントダウン停止
+            clearInterval(this.countInterval);
+
+            // カウントダウン非表示
+            this.hiddenCounter();
+            break;
+          case 'result': // 早押し結果の通知
+            console.log('countdown result');
+            console.log(data.value.result);
+            break;
+          default:
+        }
+      });
     },
 
     // 上司情報を親コンポーネントに送る
@@ -423,6 +455,9 @@ export default {
 
     // 待ちあり画面非表示
     hiddenStaffModule () {
+      // 画面上ステータスリセット
+      this.topStatus = '';
+
       // 画面下ステータス非表示・リセット
       this.isActiveBottomStatus = false;
       this.bottomStatus = '';
@@ -432,6 +467,56 @@ export default {
 
       // ボタン非表示
       this.isActiveBottomButton = false;
+    },
+
+    // カウントダウン表示
+    showCounter () {
+      // 画面上ステータス表示
+      this.topStatus = '部下側早押し準備中';
+
+      // box表示
+      this.isActiveBox = true;
+
+      // カウンター表示
+      this.isActiveCounter = true;
+
+      // 画面下ステータス表示
+      this.isActiveBottomStatus = true;
+      this.bottomStatus = '部下の早押し結果待ち';
+    },
+
+    // カウントダウン
+    countDown() {
+      let count = 10;
+
+      this.countInterval = setInterval(() => {
+        const activeClassName = `counter--${count}`;
+        const inActiveClassName = `counter--${count + 1}`;
+
+        // 現在のカウントを表示
+        this.counterObj[activeClassName] = true;
+
+        // 前のカウントを非表示
+        this.counterObj[inActiveClassName] = false;
+
+        count--;
+      }, 1000);
+    },
+
+    // カウントダウン非表示
+    hiddenCounter() {
+      // 画面上ステータスリセット
+      this.topStatus = '';
+
+      // box表示
+      this.isActiveBox = false;
+
+      // カウンター非表示
+      this.isActiveCounter = false;
+
+      // 画面下ステータス非表示・リセット
+      this.isActiveBottomStatus = false;
+      this.bottomStatus = '';
     },
 
     // 空枠表示切り替え
