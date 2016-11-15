@@ -4,6 +4,7 @@
     <p class="testModal__text">てすとつーる</p>
     <form class="testModal__form" @submit="submitRegisterHandler" v-on:reset="resetRegisterHandler">
       <select name="code" class="testModal__select" v-model="staffCode" v-bind:value="staffCode">
+        <option value="inoue-no">inoue-no</option>
         <option value="iwata-na">iwata-na</option>
         <option value="kaifuku">kaifuku</option>
         <option value="seki-may">seki-may</option>
@@ -21,7 +22,7 @@ export default {
   props: ['bossInfo'],
   data () {
     return {
-      staffCode: 'iwata-na',
+      staffCode: 'inoue-no',
       isActiveTest: false
     };
   },
