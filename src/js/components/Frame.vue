@@ -123,16 +123,16 @@ export default {
   name: 'frame',
   data () {
     return {
-      topStatus: 'ログイン（仮）',
+      topStatus: '',
       bottomStatus: '',
       staffDatas: [],
       bossId: '',
-      isActiveForm: true,
+      isActiveForm: false,
       isActiveLogo: false,
       isActiveBottomStatus: true,
       isActiveStartButton: false,
       isActiveStaff: false,
-      isActiveDarkBox: true,
+      isActiveDarkBox: false,
       isActivePrev: false,
       isActiveNext: false,
       isActiveStaff02: false,
@@ -166,8 +166,10 @@ export default {
   created () {
     // 待ち人数を初期化
     this.staffLength = null;
-
     this.scrollFlg;
+
+    // 上司IDを保持しているかチェック
+    this.checkHasBosssId();
 
     this.setMilkcocoa();
 
@@ -237,6 +239,48 @@ export default {
       this.getWaintStaffInterval = setInterval(() => {
         this.getWaitStaff();
       }, 5000);
+    },
+
+    // 上司IDを保持しているかチェック
+    checkHasBosssId() {
+      const param = this.getParam();
+
+      if (param && param.id) {
+        // パラメータから取得した上司IDをdataに追加
+        this.bossId = param.id;
+
+        // すべての上司情報を取得していろいろ
+        this.getBossesData();
+      } else {
+        // ログインフォーム表示
+        this.showLoginForm();
+      }
+    },
+
+    // クエリパラメータ取得
+    getParam() {
+      let result = {};
+
+      const query = document.location.search;
+
+      if (query.length > 1) {
+        // 0番目の文字列（？）を除いた文字列を取得し、区切り記号（＆）で文字列を配列に分割
+        const params = query.substring(1).split('&');
+
+        for (let i = 0, length = params.length; i < length; i++) {
+          // パラメータ名とパラメータ値に分割
+          const element = params[i].split('=');
+
+          // var pramName = element[0];
+          // var pramValue = element[1];
+
+          // パラメータ名をキーとして連想配列に追加
+          result[element[0]] = element[1];
+        }
+
+        return result;
+      }
+      return null;
     },
 
     // push通知受け取り
@@ -445,6 +489,18 @@ export default {
     setStaffModule (staffData, staffLength) {
       this.hiddenNoStaffModule();
       this.showStaffModule(staffData, staffLength);
+    },
+
+    // ログインフォーム表示
+    showLoginForm () {
+      // 画面上ステータス更新
+      this.topStatus = 'ログイン（仮）';
+
+      // box表示
+      this.isActiveDarkBox = true;
+
+      // フォーム表示
+      this.isActiveForm = true;
     },
 
     // 待ちなし画面表示
