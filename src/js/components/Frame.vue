@@ -15,7 +15,8 @@
 
         <!-- 00,01,04 -->
         <!-- box -->
-        <div class="box box--dark" v-if="isActiveBox">
+        <div class="box box--dark" v-if="isActiveDarkBox">
+          <div class="loader" v-if="isActiveLoading">Loading...</div>
           <div class="box__container">
             <!-- 00 -->
             <form class="login" v-if="isActiveForm" @submit="submitLoginHandler">
@@ -36,43 +37,24 @@
 
         <!-- 05 -->
         <!-- box -->
-        <!-- <div class="box box--bright">
+        <div class="box box--bright" v-if="isActiveBrightBox">
           <div class="box__contaner">
             <img src="img/winner.png" width="120" height="23" alt="WINNER">
-            <p class="txt-m mg-13t">Z14推進機関 第一開発部 エンジニア</p>
-            <p class="txt-xxl txt-bold mg-5t">岩田 直樹</p>
+            <p class="txt-m mg-13t">{{ rankings[0].organization }}</p>
+            <p class="txt-xxl txt-bold mg-5t">{{ rankings[0].name }}</p>
             <div class="box__table">
               <table class="resultTable mg-20t">
                 <caption class="resultTable__caption">RESULT</caption>
-                <tr>
-                  <td class="resultTable__td resultTable__rank">1</td>
-                  <td class="resultTable__td resultTable__name">岩田直樹</td>
-                  <td class="resultTable__td resultTable__time">00.01.00</td>
-                </tr>
-                <tr>
-                  <td class="resultTable__td resultTable__rank">2</td>
-                  <td class="resultTable__td resultTable__name">ぐる ナビ子</td>
-                  <td class="resultTable__td resultTable__time">00.02.00</td>
-                </tr>
-                <tr>
-                  <td class="resultTable__td resultTable__rank">3</td>
-                  <td class="resultTable__td resultTable__name">小山田 花子</td>
-                  <td class="resultTable__td resultTable__time">00.05.50</td>
+                <tr v-for="(ranking, index) in rankings">
+                  <td class="resultTable__td resultTable__rank">{{ index + 1 }}</td>
+                  <td class="resultTable__td resultTable__name">{{ ranking.name }}</td>
+                  <td class="resultTable__td resultTable__time">{{ ranking.record }}</td>
                 </tr>
               </table>
             </div>
           </div>
-        </div> -->
+        </div>
         <!-- /box -->
-        <!-- frame__bottom -->
-        <!-- <div class="frame__bottom button button--primary">
-          <span class="button__left button__left--1"></span>
-          <span class="button__left button__left--2"></span>
-          <span class="button__right button__right--1"></span>
-          <span class="button__right button__right--2"></span>
-          <button type="button" class="button__body">RESET</button>
-        </div> -->
-        <!-- /frame__bottom -->
         <!-- 05 -->
 
         <!-- 02,03 -->
@@ -109,7 +91,7 @@
           </div>
           <!-- /00,01,04 -->
           <!-- 02~03 -->
-          <div class="button button--accent" v-if="isActiveBottomButton">
+          <div class="button button--accent" v-if="isActiveStartButton">
             <span class="button__left button__left--1"></span>
             <span class="button__left button__left--2"></span>
             <span class="button__right button__right--1"></span>
@@ -117,6 +99,15 @@
             <button type="button" class="button__body" @click="clickStartHandler">早押開始</button>
           </div>
           <!-- /02~03 -->
+          <!-- 05 -->
+          <div class="button button--primary" v-if="isActiveResetButton">
+            <span class="button__left button__left--1"></span>
+            <span class="button__left button__left--2"></span>
+            <span class="button__right button__right--1"></span>
+            <span class="button__right button__right--2"></span>
+            <button type="button" class="button__body" @click="clickResetHandler">RESET</button>
+          </div>
+          <!-- /05 -->
         </div>
         <!-- /frame__bottom -->
       </div>
@@ -139,14 +130,17 @@ export default {
       isActiveForm: true,
       isActiveLogo: false,
       isActiveBottomStatus: true,
-      isActiveBottomButton: false,
+      isActiveStartButton: false,
       isActiveStaff: false,
-      isActiveBox: true,
+      isActiveDarkBox: true,
       isActivePrev: false,
       isActiveNext: false,
       isActiveStaff02: false,
       isActiveStaff03: false,
       isActiveCounter: false,
+      isActiveResetButton: false,
+      isActiveBrightBox: false,
+      isActiveLoading: false,
       counterObj: {
         'counter--1': false,
         'counter--2': false,
@@ -158,18 +152,30 @@ export default {
         'counter--8': false,
         'counter--9': false,
         'counter--10': false
-      }
+      },
+      pushResult: {},
+      rankings: [
+        {
+          name: '',
+          organization: ''
+        }
+      ],
+      counter: 10
     };
   },
   created () {
     // 待ち人数を初期化
     this.staffLength = null;
 
-
     this.scrollFlg;
 
-
     this.setMilkcocoa();
+
+    // 早押し結果の受け取りを検知
+    this.$watch('rankings', () => {
+      // box表示
+      this.isActiveBrightBox = true;
+    });
   },
   methods: {
     // ログインボタンクリック時のイベント
@@ -182,7 +188,14 @@ export default {
 
     // 早押開始ボタンクリック時のイベント
     clickStartHandler () {
-      // ローディング中みたいな画面
+      // 部下リスト非表示
+      this.hiddenStaffModule();
+
+      // カウントダウン表示
+      this.showCounter();
+
+      // ローディング表示
+      this.isActiveLoading = true;
 
       console.log('start');
 
@@ -212,6 +225,20 @@ export default {
       this.$refs.staffList.scrollTop = this.$refs.staffList.scrollHeight - 350;
     },
 
+     // リセットボタンクリック時のイベント
+    clickResetHandler () {
+      // 結果を非表示
+      this.hiddenPushResult();
+
+      // 上司を待っている部下を取得
+      this.getWaitStaff();
+
+      // 5秒に1回待ち状況を取得
+      this.getWaintStaffInterval = setInterval(() => {
+        this.getWaitStaff();
+      }, 5000);
+    },
+
     // push通知受け取り
     setMilkcocoa() {
       // MilkCocoa
@@ -227,14 +254,14 @@ export default {
           case 'start': // カウントダウン開始
             console.log('countdown start');
 
-            // 部下リスト非表示
-            this.hiddenStaffModule();
-
-            // カウントダウン表示
-            this.showCounter();
+            // ローディング非表示
+            this.isActiveLoading  = false;
 
             // カウントダウン
             this.countDown();
+            this.countInterval = setInterval(() => {
+              this.countDown();
+            }, 1000);
           case 'pre_finish': // カウントダウン終了５秒前
             console.log('countdown pre finish');
             break;
@@ -244,12 +271,33 @@ export default {
             // カウントダウン停止
             clearInterval(this.countInterval);
 
+            // 部下リスト取得一旦停止
+            clearInterval(this.getWaintStaffInterval);
+
             // カウントダウン非表示
             this.hiddenCounter();
+
+            // 画面上ステータス更新
+            this.topStatus = '早押し結果取得中';
+
+            // ローディング表示
+            this.isActiveLoading = true;
+
+            // 早押し開始時間を保持
+            this.pushStartTime = data.timestamp;
             break;
           case 'result': // 早押し結果の通知
             console.log('countdown result');
             console.log(data.value.result);
+
+            // ローディング非表示
+            this.isActiveLoading  = false;
+
+            // リセットボタン表示
+            this.isActiveResetButton = true;
+
+            // 結果を表示
+            this.showPushResult(data.value);
             break;
           default:
         }
@@ -288,7 +336,7 @@ export default {
             this.getWaitStaff();
 
             // 5秒に1回待ち状況を取得
-            setInterval(() => {
+            this.getWaintStaffInterval = setInterval(() => {
               this.getWaitStaff();
             }, 5000);
 
@@ -307,7 +355,7 @@ export default {
     // ログイン画面のモジュールを非表示に
     hiddenLoginModule() {
       // box非表示
-      this.isActiveBox = false;
+      this.isActiveDarkBox = false;
 
       // 画面上ステータスリセット
       this.topStatus = '';
@@ -409,7 +457,7 @@ export default {
       this.isActiveBottomStatus = true;
 
       // box表示
-      this.isActiveBox = true;
+      this.isActiveDarkBox = true;
 
       // ロゴ表示
       this.isActiveLogo = true;
@@ -422,7 +470,7 @@ export default {
       this.bottomStatus = '';
 
       // boxを非表示に
-      this.isActiveBox = false;
+      this.isActiveDarkBox = false;
 
       // ロゴ非表示
       this.isActiveLogo = false;
@@ -450,7 +498,7 @@ export default {
       }
 
       // 早押しボタン表示
-      this.isActiveBottomButton = true;
+      this.isActiveStartButton = true;
     },
 
     // 待ちあり画面非表示
@@ -466,7 +514,7 @@ export default {
       this.isActiveStaff = false;
 
       // ボタン非表示
-      this.isActiveBottomButton = false;
+      this.isActiveStartButton = false;
     },
 
     // カウントダウン表示
@@ -475,7 +523,7 @@ export default {
       this.topStatus = '部下側早押し準備中';
 
       // box表示
-      this.isActiveBox = true;
+      this.isActiveDarkBox = true;
 
       // カウンター表示
       this.isActiveCounter = true;
@@ -487,20 +535,20 @@ export default {
 
     // カウントダウン
     countDown() {
-      let count = 10;
+      console.log(this.counter);
+      if (this.counter === 0) { // カウントが0だったら
+        return;
+      }
+      const activeClassName = `counter--${this.counter}`;
+      const inActiveClassName = `counter--${this.counter + 1}`;
 
-      this.countInterval = setInterval(() => {
-        const activeClassName = `counter--${count}`;
-        const inActiveClassName = `counter--${count + 1}`;
+      // 現在のカウントを表示
+      this.counterObj[activeClassName] = true;
 
-        // 現在のカウントを表示
-        this.counterObj[activeClassName] = true;
+      // 前のカウントを非表示
+      this.counterObj[inActiveClassName] = false;
 
-        // 前のカウントを非表示
-        this.counterObj[inActiveClassName] = false;
-
-        count--;
-      }, 1000);
+      this.counter--;
     },
 
     // カウントダウン非表示
@@ -508,15 +556,78 @@ export default {
       // 画面上ステータスリセット
       this.topStatus = '';
 
-      // box表示
-      this.isActiveBox = false;
-
       // カウンター非表示
       this.isActiveCounter = false;
 
       // 画面下ステータス非表示・リセット
       this.isActiveBottomStatus = false;
       this.bottomStatus = '';
+    },
+
+    // 早押し結果を表示
+    showPushResult (value) {
+      // box非表示
+      this.isActiveDarkBox = false;
+
+      const result = value.result;
+
+      if (result.length) {
+        // datetimeの降順でソートし、ランキングをdataに追加
+        this.setRankingsData(this.sortPushResult(result));
+
+        // 画面上ステータス更新
+        this.topStatus = '部下が来るまで席で待機してください';
+      } else {
+        // 画面上ステータス更新
+        this.topStatus = '諸事情により実行されませんでした';
+
+        // box表示
+        this.isActiveDarkBox = true;
+      }
+    },
+
+    // 早押し順でソート
+    sortPushResult(result) {
+      const sortedResult = result.sort((a, b) => {
+        if (a.datetime < b.datetime) {
+          return -1;
+        }
+        if (a.datetime > b.datetime) {
+          return 1;
+        }
+        return 0;
+      });
+
+      return sortedResult;
+    },
+
+    // rankingsを更新
+    setRankingsData(result) {
+      const rankings = [];
+
+      for (let i = 0, length = result.length; i < length; i++) {
+        const ranking = {
+          // 名前を配列に追加
+          name: result[i].subordinate.name,
+
+          // 早押し開始時間から実際に押された時間を引き、秒に換算して配列に追加
+          record: (result[i].datetime - this.pushStartTime) / 1000
+        };
+
+        rankings.push(ranking);
+      }
+
+      // ランキングをdataに追加
+      this.rankings = rankings;
+    },
+
+    // 早押し結果を非表示
+    hiddenPushResult() {
+      // ボックス非表示
+      this.isActiveBrightBox = false;
+
+      // リセットボタン非表示
+      this.isActiveResetButton = false;
     },
 
     // 空枠表示切り替え
@@ -602,4 +713,6 @@ export default {
 @import "../../scss/module/staff";
 @import "../../scss/module/media";
 @import "../../scss/module/counter";
+@import "../../scss/module/resultTable";
+@import "../../scss/module/loader";
 </style>
