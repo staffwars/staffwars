@@ -185,7 +185,7 @@ export default {
 
     // 初期画面切り替え
     this.switchFirstView();
-    
+
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
       // box表示
@@ -354,6 +354,9 @@ export default {
           }
           case 'result': { // 早押し結果の通知
             // console.log('countdown result');
+
+            // push通知の受け取りを停止
+            ds.off('push');
 
             // ローディング非表示
             this.isActiveLoading = false;
