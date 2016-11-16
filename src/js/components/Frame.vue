@@ -193,6 +193,9 @@ export default {
 
     // 早押開始ボタンクリック時のイベント
     clickStartHandler() {
+      // 早押し中フラグ
+      this.startFlag = true;
+
       // 部下リスト非表示
       this.hiddenStaffModule();
 
@@ -320,6 +323,9 @@ export default {
             // 部下リスト取得一旦停止
             clearInterval(this.getWaintStaffInterval);
 
+            // 早押し開始フラグ
+            this.startFlag = false;
+
             // カウントダウン非表示
             this.hiddenCountModule();
 
@@ -340,11 +346,11 @@ export default {
             // ローディング非表示
             this.isActiveLoading = false;
 
-            // リセットボタン表示
-            this.isActiveResetButton = true;
-
             // 結果を表示
             this.showPushResultModule(data.value);
+
+            // リセットボタン表示
+            this.isActiveResetButton = true;
             break;
           }
           default:
@@ -452,16 +458,63 @@ export default {
           // 待ち人数を更新
           this.staffLength = staffData.length;
 
-          // 0人画面表示
-          this.setNostaffModule();
+
+          if (!this.startFlag) {
+            // 0人画面表示
+            this.setNostaffModule();
+          }
         }
       } else { // 待ちあり
         if (this.staffLength !== staffData.length) { // 待ち人数が変化していたら
           // 待ち人数を更新
           this.staffLength = staffData.length;
 
-          this.setStaffModule(staffData, staffData.length);
+          if (!this.startFlag) {
+            this.setStaffModule(staffData, staffData.length);
+          }
         }
+      }
+    },
+
+    // 部下情報一覧を取得
+    getStaffInfo(simpleStaffData) {
+      this.$http.get('https://staffwars.azurewebsites.net/api/subordinate/').then((response) => {
+        // success callback
+        this.getStaffOrganization(response.data.data, simpleStaffData);
+      }, (response) => {
+        // error callback
+        console.error(response);
+      });
+    },
+
+    // 部下の組織を取得して追加したものを返却
+    getStaffOrganization(data, simpleStaffData) {
+      let category = '';
+
+      for (let i = 0, simpleStaffDataLength = simpleStaffData.length; i < simpleStaffDataLength; i++) {
+        for (let j = 0, dataLength = data.length; j < dataLength; j++) {
+          if (simpleStaffData[i].subordinate) { // ランキング
+            category = 'ranking';
+
+            if (simpleStaffData[i].subordinate.code === data[j].code) {
+              simpleStaffData[i].subordinate.organization = data[j].organization;
+            }
+          } else { // 上司待ち部下一覧
+            category = 'staffList';
+
+            if (simpleStaffData[i].code === data[j].code) {
+              simpleStaffData[i].organization = data[j].organization;
+            }
+          }
+        }
+      }
+
+      if (category === 'ranking') {
+        // ランキングをdataに追加
+        this.setRankingsData(simpleStaffData);
+      } else {
+        // 部下情報をdataに追加
+        this.staffDatas = simpleStaffData;
       }
     },
 
@@ -538,8 +591,7 @@ export default {
       // 画面上ステータス更新
       this.topStatus = `あなたを待っている部下が${staffLength}人います`;
 
-      // 部下情報をdataに追加
-      this.staffDatas = staffData;
+      this.getStaffInfo(staffData);
 
       // 部下情報を表示
       this.isActiveStaff = true;
@@ -611,8 +663,8 @@ export default {
       const result = value.result;
 
       if (result.length) {
-        // datetimeの降順でソートし、ランキングをdataに追加
-        this.setRankingsData(this.sortPushResult(result));
+        // datetimeでソートし、部下の組織を取得
+        this.getStaffInfo(this.sortPushResult(result));
 
         // 画面上ステータス更新
         this.topStatus = '部下が来るまで席で待機してください';
@@ -639,6 +691,15 @@ export default {
       if (this.counter === 0) { // カウントが0だったら
         // カウントダウン停止
         clearInterval(this.countInterval);
+
+        // 1を非表示に
+        this.counterObj['counter--1'] = false;
+
+        // カウンター自体を非表示に
+        this.isActiveCounter = false;
+
+        // カウントを10に戻す
+        this.counter = 10;
 
         // 処理を抜ける
         return;
@@ -675,6 +736,7 @@ export default {
 
     // rankingsを更新
     setRankingsData(result) {
+
       const rankings = [];
 
       for (let i = 0, length = result.length; i < length; i++) {
@@ -683,7 +745,9 @@ export default {
           name: result[i].subordinate.name,
 
           // 早押し開始時間から実際に押された時間を引き、秒に換算して配列に追加
-          record: (result[i].datetime - this.pushStartTime) / 1000
+          record: (result[i].datetime - this.pushStartTime) / 1000,
+
+          organization: result[i].subordinate.organization
         };
 
         rankings.push(ranking);

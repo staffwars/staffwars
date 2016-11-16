@@ -63,9 +63,8 @@ export default {
         code: code
       };
 
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/regist/`, body).then((response) => {
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/regist/`, body).then(() => {
         // success callback
-        console.log(response);
       }, (response) => {
         // error callback
         console.error(response);
@@ -78,9 +77,8 @@ export default {
         code: code
       };
 
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/unregist/`, body).then((response) => {
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/unregist/`, body).then(() => {
         // success callback
-        console.log(response);
       }, (response) => {
         // error callback
         console.error(response);
