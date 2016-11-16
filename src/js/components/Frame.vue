@@ -17,7 +17,9 @@
         <!-- 00,01,04 -->
         <!-- box -->
         <div class="box box--dark" v-if="isActiveDarkBox">
-          <div class="loader" v-if="isActiveLoading">Loading...</div>
+          <div class="loader" v-if="isActiveLoading">
+            <div class="loader__body"></div>
+          </div>
           <div class="box__container">
             <!-- 00 -->
             <form class="login" v-if="isActiveForm" @submit="submitLoginHandler">
@@ -38,30 +40,32 @@
 
         <!-- 05 -->
         <!-- box -->
-        <div class="box box--bright" v-if="isActiveBrightBox">
-          <!-- winner -->
-          <div class="box__container" v-if="isActiveWinner">
-            <img src="img/winner.png" width="120" height="23" alt="WINNER">
-            <p class="txt-m mg-13t">{{ rankings[0].organization }}</p>
-            <p class="txt-xxl txt-bold mg-5t">{{ rankings[0].name }}</p>
-            <div class="box__table">
-              <table class="resultTable mg-20t">
-                <caption class="resultTable__caption">RESULT</caption>
-                <tr v-for="(ranking, index) in rankings">
-                  <td class="resultTable__td resultTable__rank">{{ index + 1 }}</td>
-                  <td class="resultTable__td resultTable__name">{{ ranking.name }}</td>
-                  <td class="resultTable__td resultTable__time">{{ ranking.record }}</td>
-                </tr>
-              </table>
+        <transition name="loader">
+          <div class="box box--bright" v-if="isActiveBrightBox">
+            <!-- winner -->
+            <div class="box__container" v-if="isActiveWinner">
+              <img src="img/winner.png" width="120" height="23" alt="WINNER">
+              <p class="txt-m mg-13t">{{ rankings[0].organization }}</p>
+              <p class="txt-xxl txt-bold mg-5t">{{ rankings[0].name }}</p>
+              <div class="box__table">
+                <table class="resultTable mg-20t">
+                  <caption class="resultTable__caption">RESULT</caption>
+                  <tr v-for="(ranking, index) in rankings">
+                    <td class="resultTable__td resultTable__rank">{{ index + 1 }}</td>
+                    <td class="resultTable__td resultTable__name">{{ ranking.name }}</td>
+                    <td class="resultTable__td resultTable__time">{{ ranking.record }}</td>
+                  </tr>
+                </table>
+              </div>
             </div>
+            <!-- /winner -->
+            <!-- draw -->
+            <div class="box__container" v-if="isActiveDraw">
+              <p class="box__result">DRAW</p>
+            </div>
+            <!-- /draw -->
           </div>
-          <!-- /winner -->
-          <!-- draw -->
-          <div class="box__container" v-if="isActiveDraw">
-            <p class="box__result">DRAW</p>
-          </div>
-          <!-- /draw -->
-        </div>
+        </transition>
         <!-- /box -->
         <!-- 05 -->
 
@@ -188,7 +192,13 @@ export default {
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
       // box表示
+      this.isActiveBrightBox = true;
       this.isActiveWinner = true;
+
+      setTimeout(() => {
+        // リセットボタン表示
+        this.isActiveResetButton = true;
+      }, 2000);
     });
   },
   methods: {
@@ -242,14 +252,17 @@ export default {
 
      // リセットボタンクリック時のイベント
     clickResetHandler() {
+      // 早押し中フラグ
+      this.startFlag = false;
+
       // 結果を非表示
       this.hiddenPushResultModule();
 
-      // 再び上司待ちの部下を取得する処理を再開
+      // 待ち人数を初期化
+      this.staffLength = null;
+
+      // 上司待ち状況を取得
       this.getWaitStaff();
-      this.getWaintStaffInterval = setInterval(() => {
-        this.getWaitStaff();
-      }, 5000);
     },
 
     // 上司IDを保持しているかしていないかによって画面を切り替え
@@ -326,12 +339,6 @@ export default {
           case 'finish': { // カウントダウン終了＝早押し開始
             // console.log('countdown finish');
 
-            // 部下リスト取得一旦停止
-            clearInterval(this.getWaintStaffInterval);
-
-            // 早押し開始フラグ
-            this.startFlag = false;
-
             // カウントダウン非表示
             this.hiddenCountModule();
 
@@ -351,14 +358,8 @@ export default {
             // ローディング非表示
             this.isActiveLoading = false;
 
-            // boxだけ先に表示
-            this.isActiveBrightBox = true;
-
             // 結果を表示
             this.showPushResultModule(data.value);
-
-            // リセットボタン表示
-            this.isActiveResetButton = true;
             break;
           }
           default:
@@ -395,7 +396,7 @@ export default {
 
           // 上司を待っている部下を取得
           this.getWaitStaff();
-          this.getWaintStaffInterval = setInterval(() => {
+          setInterval(() => {
             this.getWaitStaff();
           }, 5000);
 
@@ -465,7 +466,6 @@ export default {
         if (this.staffLength !== staffData.length) { // 待ち人数が変化していたら
           // 待ち人数を更新
           this.staffLength = staffData.length;
-
 
           if (!this.startFlag) {
             // 0人画面表示
@@ -681,12 +681,21 @@ export default {
         this.topStatus = '諸事情により実行されませんでした';
 
         // DRAW表示
+        this.isActiveBrightBox = true;
         this.isActiveDraw = true;
+
+        setTimeout(() => {
+          // リセットボタン表示
+          this.isActiveResetButton = true;
+        }, 2000);
       }
     },
 
     // 早押し結果を非表示
     hiddenPushResultModule() {
+      // 画面上ステータスリセット
+      this.topStatus = '';
+
       // ボックス非表示
       this.isActiveBrightBox = false;
 
