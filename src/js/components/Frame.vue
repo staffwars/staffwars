@@ -39,7 +39,8 @@
         <!-- 05 -->
         <!-- box -->
         <div class="box box--bright" v-if="isActiveBrightBox">
-          <div class="box__container" v-if="isActiveBrightBoxContainer">
+          <!-- winner -->
+          <div class="box__container" v-if="isActiveWinner">
             <img src="img/winner.png" width="120" height="23" alt="WINNER">
             <p class="txt-m mg-13t">{{ rankings[0].organization }}</p>
             <p class="txt-xxl txt-bold mg-5t">{{ rankings[0].name }}</p>
@@ -54,6 +55,12 @@
               </table>
             </div>
           </div>
+          <!-- /winner -->
+          <!-- draw -->
+          <div class="box__container" v-if="isActiveDraw">
+            <p class="box__result">DRAW</p>
+          </div>
+          <!-- /draw -->
         </div>
         <!-- /box -->
         <!-- 05 -->
@@ -164,7 +171,8 @@ export default {
       isActiveResetButton: false,
       isActiveBrightBox: false,
       isActiveLoading: false,
-      isActiveBrightBoxContainer: false
+      isActiveWinner: false,
+      isActiveDraw: false
     };
   },
   created() {
@@ -180,7 +188,7 @@ export default {
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
       // box表示
-      this.isActiveBrightBoxContainer = true;
+      this.isActiveWinner = true;
     });
   },
   methods: {
@@ -292,16 +300,13 @@ export default {
       const ds = milkcocoa.dataStore('messages');
 
       ds.on('push', (data) => {
-
-        console.log(data);
-
         switch (data.value.type) {
           case 'pre_start': { // カウントダウン開始５秒前
-            console.log('countdown pre start');
+            // console.log('countdown pre start');
             break;
           }
           case 'start': { // カウントダウン開始
-            console.log('countdown start');
+            // console.log('countdown start');
 
             // ローディング非表示
             this.isActiveLoading = false;
@@ -315,11 +320,11 @@ export default {
             break;
           }
           case 'pre_finish': { // カウントダウン終了５秒前
-            console.log('countdown pre finish');
+            // console.log('countdown pre finish');
             break;
           }
           case 'finish': { // カウントダウン終了＝早押し開始
-            console.log('countdown finish');
+            // console.log('countdown finish');
 
             // 部下リスト取得一旦停止
             clearInterval(this.getWaintStaffInterval);
@@ -341,8 +346,7 @@ export default {
             break;
           }
           case 'result': { // 早押し結果の通知
-            console.log('countdown result');
-            console.log(data.value.result);
+            // console.log('countdown result');
 
             // ローディング非表示
             this.isActiveLoading = false;
@@ -676,8 +680,8 @@ export default {
         // 画面上ステータス更新
         this.topStatus = '諸事情により実行されませんでした';
 
-        // box表示
-        this.isActiveDarkBox = true;
+        // DRAW表示
+        this.isActiveDraw = true;
       }
     },
 
@@ -687,7 +691,8 @@ export default {
       this.isActiveBrightBox = false;
 
       // ボックスの中身非表示
-      this.isActiveBrightBoxContainer = false;
+      this.isActiveWinner = false;
+      this.isActiveDraw = false;
 
       // リセットボタン非表示
       this.isActiveResetButton = false;
@@ -786,27 +791,28 @@ export default {
       xhr.onreadystatechange = () => {
         switch (xhr.readyState) {
           case 0: { // 未初期化状態.
-            console.log('uninitialized!');
+            // console.log('uninitialized!');
             break;
           }
           case 1: { // データ送信中.
-            console.log('loading...');
+            // console.log('loading...');
             break;
           }
           case 2: { // 応答待ち.
-            console.log('loaded.');
+            // console.log('loaded.');
             break;
           }
           case 3: { // データ受信中.
-            console.log(`interactive... ${xhr.responseText.length} bytes.`);
+            // console.log(`interactive... ${xhr.responseText.length} bytes.`);
             break;
           }
           case 4: { // データ受信完了.
             if (xhr.status === 200 || xhr.status === 304) {
-              const data = xhr.responseText; // responseXML もあり
-              console.log(`COMPLETE! :${data}`);
+              // const data = xhr.responseText; // responseXML もあり
+              // console.log(`COMPLETE! :${data}`);
+              // console.log('COMPLETE!');
             } else {
-              console.log(`Failed. HttpStatus: ${xhr.statusText}`);
+              // console.error(`Failed. HttpStatus: ${xhr.statusText}`);
             }
             break;
           }
