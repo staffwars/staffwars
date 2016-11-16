@@ -185,10 +185,7 @@ export default {
 
     // 初期画面切り替え
     this.switchFirstView();
-
-    // push通知受け取り
-    this.getPushNotice();
-
+    
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
       // box表示
@@ -212,6 +209,9 @@ export default {
 
     // 早押開始ボタンクリック時のイベント
     clickStartHandler() {
+      // push通知受け取り
+      this.getPushNotice();
+
       // 早押し中フラグ
       this.startFlag = true;
 
