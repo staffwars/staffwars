@@ -39,7 +39,7 @@
         <!-- 05 -->
         <!-- box -->
         <div class="box box--bright" v-if="isActiveBrightBox">
-          <div class="box__contaner">
+          <div class="box__container" v-if="isActiveBrightBoxContainer">
             <img src="img/winner.png" width="120" height="23" alt="WINNER">
             <p class="txt-m mg-13t">{{ rankings[0].organization }}</p>
             <p class="txt-xxl txt-bold mg-5t">{{ rankings[0].name }}</p>
@@ -163,7 +163,8 @@ export default {
       isActiveCounter: false,
       isActiveResetButton: false,
       isActiveBrightBox: false,
-      isActiveLoading: false
+      isActiveLoading: false,
+      isActiveBrightBoxContainer: false
     };
   },
   created() {
@@ -179,7 +180,7 @@ export default {
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
       // box表示
-      this.isActiveBrightBox = true;
+      this.isActiveBrightBoxContainer = true;
     });
   },
   methods: {
@@ -345,6 +346,9 @@ export default {
 
             // ローディング非表示
             this.isActiveLoading = false;
+
+            // boxだけ先に表示
+            this.isActiveBrightBox = true;
 
             // 結果を表示
             this.showPushResultModule(data.value);
@@ -681,6 +685,9 @@ export default {
     hiddenPushResultModule() {
       // ボックス非表示
       this.isActiveBrightBox = false;
+
+      // ボックスの中身非表示
+      this.isActiveBrightBoxContainer = false;
 
       // リセットボタン非表示
       this.isActiveResetButton = false;
