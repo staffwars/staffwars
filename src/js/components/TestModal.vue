@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       staffCode: 'inoue-no',
-      isActiveTest: false
+      isActiveTest: false,
     };
   },
   created() {
@@ -60,7 +60,7 @@ export default {
     // 上司待ちを登録（テスト用）
     registerStaff(code) {
       const body = {
-        code: code
+        code,
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/regist/`, body).then(() => {
@@ -74,7 +74,7 @@ export default {
     // 上司待ちを解除（テスト用）
     unregisterStaff(code) {
       const body = {
-        code: code
+        code,
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/unregist/`, body).then(() => {
@@ -83,8 +83,8 @@ export default {
         // error callback
         console.error(response);
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <!-- /script -->

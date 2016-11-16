@@ -19,18 +19,18 @@ export default {
   components: {
     Frame,
     Navigation,
-    TestModal
+    TestModal,
   },
-  data () {
+  data() {
     return {
-      bossInfoFromChild: ''
+      bossInfoFromChild: '',
     };
   },
   methods: {
-    getBossInfo (value) {
+    getBossInfo(value) {
       this.bossInfoFromChild = value;
-    }
-  }
+    },
+  },
 };
 </script>
 <!-- /script -->

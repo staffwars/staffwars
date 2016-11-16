@@ -17,7 +17,7 @@
     "pretest": "npm run build",
     "test": "echo no test",
     "start": "node index.js",
-    "lint": "eslint src/js/**/*.{js,vue}; exit 0",
+    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' src/js/**/*.{js,vue}; exit 0",
     "sprite": "spritesmith --rc .spritesmith.js"
   },
   "repository": {
@@ -44,7 +44,8 @@
   },
   "dependencies": {
     "milkcocoa": "^0.6.0",
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "vue-resource": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.1",
@@ -59,8 +60,13 @@
     "browserify-hmr": "^0.3.1",
     "cross-env": "^2.0.0",
     "envify": "^3.4.1",
-    "eslint": "^3.9.1",
+    "eslint": "^3.10.2",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-friendly-formatter": "^2.0.6",
     "eslint-plugin-html": "^1.5.2",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.7.1",
     "http-server": "^0.9.0",
     "node-sass": "^3.11.1",
     "npm-run-all": "^2.3.0",
@@ -70,7 +76,6 @@
     "uglify-js": "^2.5.0",
     "util": "^0.10.3",
     "vinyl-source-stream": "^1.1.0",
-    "vue-resource": "^1.0.3",
     "vueify": "^9.0.0",
     "watchify": "^3.4.0"
   },

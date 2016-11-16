@@ -151,14 +151,14 @@ export default {
         'counter--7': false,
         'counter--8': false,
         'counter--9': false,
-        'counter--10': false
+        'counter--10': false,
       },
       pushResult: {},
       rankings: [
         {
           name: '',
-          organization: ''
-        }
+          organization: '',
+        },
       ],
       counter: 10,
       isActiveForm: false,
@@ -176,7 +176,7 @@ export default {
       isActiveBrightBox: false,
       isActiveLoading: false,
       isActiveWinner: false,
-      isActiveDraw: false
+      isActiveDraw: false,
     };
   },
   created() {
@@ -284,7 +284,7 @@ export default {
 
     // クエリパラメータ取得
     getParam() {
-      let result = {};
+      const result = {};
 
       const query = document.location.search;
 
@@ -292,7 +292,7 @@ export default {
         // 0番目の文字列（？）を除いた文字列を取得し、区切り記号（＆）で文字列を配列に分割
         const params = query.substring(1).split('&');
 
-        for (let i = 0, length = params.length; i < length; i++) {
+        for (let i = 0, length = params.length; i < length; i += 1) {
           // パラメータ名とパラメータ値に分割
           const element = params[i].split('=');
 
@@ -388,7 +388,7 @@ export default {
             img: `img/${bossData.code}.png`,
             organization: bossData.organization,
             name: bossData.name,
-            time: this.formatStartTime(bossData.start_datetime)
+            time: this.formatStartTime(bossData.start_datetime),
           };
 
           // 上司情報を親コンポーネントに送信
@@ -409,7 +409,6 @@ export default {
           // エラー文表示
           this.bottomStatus = 'idが存在しません';
         }
-
       }, (response) => {
         // error callback
         console.error(response);
@@ -418,7 +417,7 @@ export default {
 
     // 特定の上司情報を取得
     getBossData(bossesData, bossId) {
-      const bossData = bossesData.data.filter((v) => v.id === bossId);
+      const bossData = bossesData.data.filter(v => v.id === bossId);
 
       if (bossData.length === 1) {
         return bossData[0];
@@ -434,14 +433,16 @@ export default {
 
         const dtObj = {
           hours: dt.getHours(),
-          minutes: dt.getMinutes()
+          minutes: dt.getMinutes(),
         };
 
-        for (let key in dtObj) {
-          if (dtObj[key] < 10) {
-            dtObj[key] = '0' + dtObj[key];
+        Object.keys(dtObj).forEach(function (key) {
+          const value = this[key];
+
+          if (value < 10) {
+            this[key] = `0${value}`;
           }
-        }
+        }, dtObj);
 
         return `${dtObj.hours}:${dtObj.minutes}`;
       }
@@ -475,7 +476,7 @@ export default {
             this.setNostaffModule();
           }
         }
-      } else { // 待ちあり
+      } else if (staffLength > 0) { // 待ちあり
         if (this.staffLength !== staffData.length) { // 待ち人数が変化していたら
           // 待ち人数を更新
           this.staffLength = staffData.length;
@@ -502,19 +503,23 @@ export default {
     getStaffOrganization(data, simpleStaffData) {
       let category = '';
 
-      for (let i = 0, simpleStaffDataLength = simpleStaffData.length; i < simpleStaffDataLength; i++) {
-        for (let j = 0, dataLength = data.length; j < dataLength; j++) {
+      const newStaffData = simpleStaffData;
+
+      for (let i = 0, simpleStaffDataLength = simpleStaffData.length;
+        i < simpleStaffDataLength;
+        i += 1) {
+        for (let j = 0, dataLength = data.length; j < dataLength; j += 1) {
           if (simpleStaffData[i].subordinate) { // ランキング
             category = 'ranking';
 
             if (simpleStaffData[i].subordinate.code === data[j].code) {
-              simpleStaffData[i].subordinate.organization = data[j].organization;
+              newStaffData[i].subordinate.organization = data[j].organization;
             }
           } else { // 上司待ち部下一覧
             category = 'staffList';
 
             if (simpleStaffData[i].code === data[j].code) {
-              simpleStaffData[i].organization = data[j].organization;
+              newStaffData[i].organization = data[j].organization;
             }
           }
         }
@@ -522,10 +527,10 @@ export default {
 
       if (category === 'ranking') {
         // ランキングをdataに追加
-        this.setRankingsData(simpleStaffData);
+        this.setRankingsData(newStaffData);
       } else {
         // 部下情報をdataに追加
-        this.staffDatas = simpleStaffData;
+        this.staffDatas = newStaffData;
       }
     },
 
@@ -654,7 +659,7 @@ export default {
     },
 
     // カウントダウン非表示
-    hiddenCountModule () {
+    hiddenCountModule() {
       // 画面上ステータスリセット
       this.topStatus = '';
 
@@ -738,7 +743,7 @@ export default {
       // 前のカウントを非表示
       this.counterObj[inActiveClassName] = false;
 
-      this.counter--;
+      this.counter -= 1;
     },
 
     // 早押し順でソート
@@ -760,10 +765,9 @@ export default {
 
     // rankingsを更新
     setRankingsData(result) {
-
       const rankings = [];
 
-      for (let i = 0, length = result.length; i < length; i++) {
+      for (let i = 0, length = result.length; i < length; i += 1) {
         const ranking = {
           // 名前を配列に追加
           name: result[i].subordinate.name,
@@ -771,7 +775,7 @@ export default {
           // 早押し開始時間から実際に押された時間を引き、秒に換算して配列に追加
           record: (result[i].datetime - this.pushStartTime) / 1000,
 
-          organization: result[i].subordinate.organization
+          organization: result[i].subordinate.organization,
         };
 
         rankings.push(ranking);
@@ -856,8 +860,8 @@ export default {
       } else {
         this.isActiveNext = true;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <!-- /script -->

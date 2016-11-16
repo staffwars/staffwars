@@ -53,7 +53,7 @@ export default {
       isActiveSchedule: false,
       isActiveReset: true,
       isActiveBalloon: false,
-      isTimeCautionNotice: false
+      isTimeCautionNotice: false,
     };
   },
   created() {
@@ -149,7 +149,7 @@ export default {
     // 時間APIに送る
     sendStartTime(timeString) {
       const updateInfo = {
-        start_datetime: timeString
+        start_datetime: timeString,
       };
 
       this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then(() => {
@@ -177,8 +177,8 @@ export default {
       dt.setMinutes(minutes);
 
       return dt.toISOString();
-    }
-  }
+    },
+  },
 };
 </script>
 <!-- /script -->
