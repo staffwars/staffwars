@@ -78,20 +78,17 @@
   }
   &__reset {
     border: none;
+    display: block;
     position: absolute;
+    content: "";
     right: 14px;
     top: 0;
     bottom: 0;
     margin: auto;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(0, 255, 255, .25);
-    border-radius: 50%;
-    color: #fff;
-    font-size: $font-size-m;
     cursor: pointer;
     padding: 0;
-    box-sizing: border-box;
+    background: none;
+    @include sprite($x);
   }
 }
 

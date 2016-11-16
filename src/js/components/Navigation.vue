@@ -24,7 +24,7 @@
               <input type="text" class="time__text" placeholder="00:00" ref="timeText" v-model="bossInfo.time" v-bind:value="bossInfo.time" v-bind:class="{ 'time__text--notice': isTimeCautionNotice }" @input="inputTimeHandler">
             </label>
             <label class="time__resetLabel">
-              <input type="reset" value="×" class="time__reset" v-if="isActiveReset">
+              <input type="reset" value="" class="time__reset" v-if="isActiveReset">
             </label>
           </form>
           <div class="time__balloon" v-if="isActiveBalloon">
