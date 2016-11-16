@@ -4,6 +4,7 @@
 <!-- 04: カウントダウン画面 -->
 <!-- 05: 結果画面 -->
 
+<!-- template -->
 <template>
   <!-- frame -->
   <div class="frame">
@@ -117,30 +118,18 @@
   </div>
   <!-- /frame -->
 </template>
+<!-- /template -->
 
+<!-- script -->
 <script>
 export default {
   name: 'frame',
-  data () {
+  data() {
     return {
       topStatus: '',
       bottomStatus: '',
       staffDatas: [],
       bossId: '',
-      isActiveForm: false,
-      isActiveLogo: false,
-      isActiveBottomStatus: true,
-      isActiveStartButton: false,
-      isActiveStaff: false,
-      isActiveDarkBox: false,
-      isActivePrev: false,
-      isActiveNext: false,
-      isActiveStaff02: false,
-      isActiveStaff03: false,
-      isActiveCounter: false,
-      isActiveResetButton: false,
-      isActiveBrightBox: false,
-      isActiveLoading: false,
       counterObj: {
         'counter--1': false,
         'counter--2': false,
@@ -160,18 +149,32 @@ export default {
           organization: ''
         }
       ],
-      counter: 10
+      counter: 10,
+      isActiveForm: false,
+      isActiveLogo: false,
+      isActiveBottomStatus: true,
+      isActiveStartButton: false,
+      isActiveStaff: false,
+      isActiveDarkBox: false,
+      isActivePrev: false,
+      isActiveNext: false,
+      isActiveStaff02: false,
+      isActiveStaff03: false,
+      isActiveCounter: false,
+      isActiveResetButton: false,
+      isActiveBrightBox: false,
+      isActiveLoading: false
     };
   },
-  created () {
+  created() {
     // 待ち人数を初期化
     this.staffLength = null;
-    this.scrollFlg;
 
-    // 上司IDを保持しているかチェック
-    this.checkHasBosssId();
+    // 初期画面切り替え
+    this.switchFirstView();
 
-    this.setMilkcocoa();
+    // push通知受け取り
+    this.getPushNotice();
 
     // 早押し結果の受け取りを検知
     this.$watch('rankings', () => {
@@ -181,7 +184,7 @@ export default {
   },
   methods: {
     // ログインボタンクリック時のイベント
-    submitLoginHandler (e) {
+    submitLoginHandler(e) {
       e.preventDefault();
 
       // すべての上司情報を取得
@@ -189,24 +192,22 @@ export default {
     },
 
     // 早押開始ボタンクリック時のイベント
-    clickStartHandler () {
+    clickStartHandler() {
       // 部下リスト非表示
       this.hiddenStaffModule();
 
       // カウントダウン表示
-      this.showCounter();
+      this.showCountModule();
 
       // ローディング表示
       this.isActiveLoading = true;
-
-      console.log('start');
 
       // 早押し開始
       this.requestStart();
     },
 
     // 部下リストスクロール時のイベント
-    scrollListHandler (e) {
+    scrollListHandler(e) {
       // 前回のスクロールイベント発火から0.1秒経っていたら矢印切り替え
       clearTimeout(this.scrollFlg);
       this.scrollFlg = setTimeout(() => {
@@ -216,33 +217,32 @@ export default {
     },
 
     // prevクリック時のイベント
-    clickListPrevHandler () {
-      // とりあえず一番上までスクロールしちゃう仕様
+    clickListPrevHandler() {
+      // とりあえず一番上にいきなり移動しちゃう仕様
       this.$refs.staffList.scrollTop = 0;
     },
 
     // nextクリック時のイベント
-    clickListNextHandler () {
-      // とりあえず一番下までスクロールしちゃう仕様
+    clickListNextHandler() {
+      // とりあえず一番下にいきなり移動しちゃう仕様
       this.$refs.staffList.scrollTop = this.$refs.staffList.scrollHeight - 350;
     },
 
      // リセットボタンクリック時のイベント
-    clickResetHandler () {
+    clickResetHandler() {
       // 結果を非表示
-      this.hiddenPushResult();
+      this.hiddenPushResultModule();
 
-      // 上司を待っている部下を取得
+      // 再び上司待ちの部下を取得する処理を再開
       this.getWaitStaff();
-
-      // 5秒に1回待ち状況を取得
       this.getWaintStaffInterval = setInterval(() => {
         this.getWaitStaff();
       }, 5000);
     },
 
-    // 上司IDを保持しているかチェック
-    checkHasBosssId() {
+    // 上司IDを保持しているかしていないかによって画面を切り替え
+    switchFirstView() {
+      // パラメータ取得
       const param = this.getParam();
 
       if (param && param.id) {
@@ -253,7 +253,7 @@ export default {
         this.getBossesData();
       } else {
         // ログインフォーム表示
-        this.showLoginForm();
+        this.showLoginModule();
       }
     },
 
@@ -271,9 +271,6 @@ export default {
           // パラメータ名とパラメータ値に分割
           const element = params[i].split('=');
 
-          // var pramName = element[0];
-          // var pramValue = element[1];
-
           // パラメータ名をキーとして連想配列に追加
           result[element[0]] = element[1];
         }
@@ -284,42 +281,47 @@ export default {
     },
 
     // push通知受け取り
-    setMilkcocoa() {
+    getPushNotice() {
       // MilkCocoa
+      /* globals MilkCocoa */
       const milkcocoa = new MilkCocoa('guitariu6e7lgx.mlkcca.com');
       const ds = milkcocoa.dataStore('messages');
 
       ds.on('push', (data) => {
+
         console.log(data);
+
         switch (data.value.type) {
-          case 'pre_start': // カウントダウン開始５秒前
+          case 'pre_start': { // カウントダウン開始５秒前
             console.log('countdown pre start');
             break;
-          case 'start': // カウントダウン開始
+          }
+          case 'start': { // カウントダウン開始
             console.log('countdown start');
 
             // ローディング非表示
-            this.isActiveLoading  = false;
+            this.isActiveLoading = false;
 
             // カウントダウン
             this.countDown();
             this.countInterval = setInterval(() => {
               this.countDown();
             }, 1000);
-          case 'pre_finish': // カウントダウン終了５秒前
+
+            break;
+          }
+          case 'pre_finish': { // カウントダウン終了５秒前
             console.log('countdown pre finish');
             break;
-          case 'finish': // カウントダウン終了＝早押し開始
+          }
+          case 'finish': { // カウントダウン終了＝早押し開始
             console.log('countdown finish');
-
-            // カウントダウン停止
-            clearInterval(this.countInterval);
 
             // 部下リスト取得一旦停止
             clearInterval(this.getWaintStaffInterval);
 
             // カウントダウン非表示
-            this.hiddenCounter();
+            this.hiddenCountModule();
 
             // 画面上ステータス更新
             this.topStatus = '早押し結果取得中';
@@ -330,89 +332,74 @@ export default {
             // 早押し開始時間を保持
             this.pushStartTime = data.timestamp;
             break;
-          case 'result': // 早押し結果の通知
+          }
+          case 'result': { // 早押し結果の通知
             console.log('countdown result');
             console.log(data.value.result);
 
             // ローディング非表示
-            this.isActiveLoading  = false;
+            this.isActiveLoading = false;
 
             // リセットボタン表示
             this.isActiveResetButton = true;
 
             // 結果を表示
-            this.showPushResult(data.value);
+            this.showPushResultModule(data.value);
             break;
+          }
           default:
         }
       });
     },
 
     // 上司情報を親コンポーネントに送る
-    sendBossInfo (bossInfo) {
+    sendBossInfo(bossInfo) {
       this.$emit('send-from-frame', bossInfo);
     },
 
     // すべての上司情報を取得
-    getBossesData () {
+    getBossesData() {
       this.$http.get('https://staffwars.azurewebsites.net/api/boss/').then((response) => {
-          // success callback
-          const bossData = this.getBossData(response.data, this.bossId);
+        // success callback
+        const bossData = this.getBossData(response.data, this.bossId);
 
+        if (bossData) {
+          // 親コンポーネントに渡す上司情報を準備
+          const bossInfo = {
+            id: bossData.id,
+            img: `img/${bossData.code}.png`,
+            organization: bossData.organization,
+            name: bossData.name,
+            time: this.formatStartTime(bossData.start_datetime)
+          };
 
-          if (bossData) {
-            // 親コンポーネントに渡す上司情報を準備
-            const bossInfo = {
-              id: bossData.id,
-              img: `img/${bossData.code}.png`,
-              organization: bossData.organization,
-              name: bossData.name,
-              time: this.formatStartTime(bossData.start_datetime)
-            };
+          // 上司情報を親コンポーネントに送信
+          this.sendBossInfo(bossInfo);
 
-            // 上司情報を親コンポーネントに送信
-            this.sendBossInfo(bossInfo);
+          // ログイン画面のモジュールを非表示に
+          this.hiddenLoginModule();
 
-            // ログイン画面のモジュールを非表示に
-            this.hiddenLoginModule();
-
-            // 上司を待っている部下を取得
+          // 上司を待っている部下を取得
+          this.getWaitStaff();
+          this.getWaintStaffInterval = setInterval(() => {
             this.getWaitStaff();
+          }, 5000);
 
-            // 5秒に1回待ち状況を取得
-            this.getWaintStaffInterval = setInterval(() => {
-              this.getWaitStaff();
-            }, 5000);
+          // テスト用フォーム表示
+          this.isActiveTest = true;
+        } else {
+          // エラー文表示
+          this.bottomStatus = 'idが存在しません';
+        }
 
-            // テスト用フォーム表示
-            this.isActiveTest = true;
-          } else {
-            // エラー文表示
-            this.bottomStatus = 'idが存在しません';
-          }
-        }, (response) => {
-          // error callback
-          console.log(response);
-        });
-    },
-
-    // ログイン画面のモジュールを非表示に
-    hiddenLoginModule() {
-      // box非表示
-      this.isActiveDarkBox = false;
-
-      // 画面上ステータスリセット
-      this.topStatus = '';
-
-      // ログインフォーム非表示
-      this.isActiveForm = false;
-
-      // frame下ステータスをリセット
-      this.bottomStatus = '';
+      }, (response) => {
+        // error callback
+        console.error(response);
+      });
     },
 
     // 特定の上司情報を取得
-    getBossData (bossesData, bossId) {
+    getBossData(bossesData, bossId) {
       const bossData = bossesData.data.filter((v) => v.id === bossId);
 
       if (bossData.length === 1) {
@@ -423,7 +410,7 @@ export default {
     },
 
     // APIから受け取った時間を、hh:mmの文字列に変換
-    formatStartTime (ISOString) {
+    formatStartTime(ISOString) {
       if (ISOString !== '') {
         const dt = new Date(ISOString);
 
@@ -431,8 +418,6 @@ export default {
           hours: dt.getHours(),
           minutes: dt.getMinutes()
         };
-
-        let time
 
         for (let key in dtObj) {
           if (dtObj[key] < 10) {
@@ -442,22 +427,23 @@ export default {
 
         return `${dtObj.hours}:${dtObj.minutes}`;
       }
+      // 受け取った時間が空文字列だったら空文字列を返却
       return '';
     },
 
     // 上司を待っている部下を取得
-    getWaitStaff () {
+    getWaitStaff() {
       this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.bossId}/regist/`).then((response) => {
         // success callback
         this.countWaitStaff(response);
       }, (response) => {
         // error callback
-        console.log(response);
+        console.error(response);
       });
     },
 
     // 待っている部下の数を数える
-    countWaitStaff (response) {
+    countWaitStaff(response) {
       const staffData = response.data.data;
       const staffLength = staffData.length;
 
@@ -480,19 +466,34 @@ export default {
     },
 
     // 待ちなし画面設定
-    setNostaffModule () {
+    setNostaffModule() {
       this.hiddenStaffModule();
       this.showNostaffModule();
     },
 
     // 待ちあり画面設定
-    setStaffModule (staffData, staffLength) {
+    setStaffModule(staffData, staffLength) {
       this.hiddenNoStaffModule();
       this.showStaffModule(staffData, staffLength);
     },
 
-    // ログインフォーム表示
-    showLoginForm () {
+    // ログインモジュール非表示
+    hiddenLoginModule() {
+      // 画面上ステータスリセット
+      this.topStatus = '';
+
+      // box非表示
+      this.isActiveDarkBox = false;
+
+      // フォーム非表示
+      this.isActiveForm = false;
+
+      // frame下ステータスをリセット
+      this.bottomStatus = '';
+    },
+
+    // ログインモジュール表示
+    showLoginModule() {
       // 画面上ステータス更新
       this.topStatus = 'ログイン（仮）';
 
@@ -504,7 +505,7 @@ export default {
     },
 
     // 待ちなし画面表示
-    showNostaffModule () {
+    showNostaffModule() {
       // 画面上ステータス更新
       this.topStatus = 'あなたを待っている部下はいません';
 
@@ -520,7 +521,7 @@ export default {
     },
 
     // 待ちなし画面非表示
-    hiddenNoStaffModule () {
+    hiddenNoStaffModule() {
       // 画面下ステータスリセット
       this.isActiveBottomStatus = false;
       this.bottomStatus = '';
@@ -533,7 +534,7 @@ export default {
     },
 
     // 待ちあり画面表示
-    showStaffModule (staffData, staffLength) {
+    showStaffModule(staffData, staffLength) {
       // 画面上ステータス更新
       this.topStatus = `あなたを待っている部下が${staffLength}人います`;
 
@@ -558,7 +559,7 @@ export default {
     },
 
     // 待ちあり画面非表示
-    hiddenStaffModule () {
+    hiddenStaffModule() {
       // 画面上ステータスリセット
       this.topStatus = '';
 
@@ -574,7 +575,7 @@ export default {
     },
 
     // カウントダウン表示
-    showCounter () {
+    showCountModule() {
       // 画面上ステータス表示
       this.topStatus = '部下側早押し準備中';
 
@@ -589,26 +590,8 @@ export default {
       this.bottomStatus = '部下の早押し結果待ち';
     },
 
-    // カウントダウン
-    countDown() {
-      console.log(this.counter);
-      if (this.counter === 0) { // カウントが0だったら
-        return;
-      }
-      const activeClassName = `counter--${this.counter}`;
-      const inActiveClassName = `counter--${this.counter + 1}`;
-
-      // 現在のカウントを表示
-      this.counterObj[activeClassName] = true;
-
-      // 前のカウントを非表示
-      this.counterObj[inActiveClassName] = false;
-
-      this.counter--;
-    },
-
     // カウントダウン非表示
-    hiddenCounter() {
+    hiddenCountModule () {
       // 画面上ステータスリセット
       this.topStatus = '';
 
@@ -621,7 +604,7 @@ export default {
     },
 
     // 早押し結果を表示
-    showPushResult (value) {
+    showPushResultModule(value) {
       // box非表示
       this.isActiveDarkBox = false;
 
@@ -642,15 +625,48 @@ export default {
       }
     },
 
+    // 早押し結果を非表示
+    hiddenPushResultModule() {
+      // ボックス非表示
+      this.isActiveBrightBox = false;
+
+      // リセットボタン非表示
+      this.isActiveResetButton = false;
+    },
+
+    // カウントダウン
+    countDown() {
+      if (this.counter === 0) { // カウントが0だったら
+        // カウントダウン停止
+        clearInterval(this.countInterval);
+
+        // 処理を抜ける
+        return;
+      }
+
+      const activeClassName = `counter--${this.counter}`;
+      const inActiveClassName = `counter--${this.counter + 1}`;
+
+      // 現在のカウントを表示
+      this.counterObj[activeClassName] = true;
+
+      // 前のカウントを非表示
+      this.counterObj[inActiveClassName] = false;
+
+      this.counter--;
+    },
+
     // 早押し順でソート
     sortPushResult(result) {
       const sortedResult = result.sort((a, b) => {
         if (a.datetime < b.datetime) {
           return -1;
         }
+
         if (a.datetime > b.datetime) {
           return 1;
         }
+
         return 0;
       });
 
@@ -677,15 +693,6 @@ export default {
       this.rankings = rankings;
     },
 
-    // 早押し結果を非表示
-    hiddenPushResult() {
-      // ボックス非表示
-      this.isActiveBrightBox = false;
-
-      // リセットボタン非表示
-      this.isActiveResetButton = false;
-    },
-
     // 空枠表示切り替え
     switchInActiveStaffItem(staffLength) {
       if (staffLength === 1) {
@@ -701,44 +708,52 @@ export default {
     },
 
     // 早押し開始
-    requestStart () {
+    requestStart() {
       const xhr = new XMLHttpRequest();
+
       // ハンドラの登録.
       xhr.onreadystatechange = () => {
-      switch (xhr.readyState) {
-        case 0:
-          // 未初期化状態.
-          console.log('uninitialized!');
-          break;
-        case 1: // データ送信中.
-          console.log('loading...');
-          break;
-        case 2: // 応答待ち.
-          console.log('loaded.');
-          break;
-        case 3: // データ受信中.
-          console.log(`interactive... ${xhr.responseText.length} bytes.`);
-          break;
-        case 4: // データ受信完了.
-          if (xhr.status === 200 || xhr.status === 304) {
-            const data = xhr.responseText; // responseXML もあり
-            console.log(`COMPLETE! :${data}`);
-          } else {
-            console.log(`Failed. HttpStatus: ${xhr.statusText}`);
+        switch (xhr.readyState) {
+          case 0: { // 未初期化状態.
+            console.log('uninitialized!');
+            break;
           }
-          break;
-      }
+          case 1: { // データ送信中.
+            console.log('loading...');
+            break;
+          }
+          case 2: { // 応答待ち.
+            console.log('loaded.');
+            break;
+          }
+          case 3: { // データ受信中.
+            console.log(`interactive... ${xhr.responseText.length} bytes.`);
+            break;
+          }
+          case 4: { // データ受信完了.
+            if (xhr.status === 200 || xhr.status === 304) {
+              const data = xhr.responseText; // responseXML もあり
+              console.log(`COMPLETE! :${data}`);
+            } else {
+              console.log(`Failed. HttpStatus: ${xhr.statusText}`);
+            }
+            break;
+          }
+          default:
+        }
       };
+
       xhr.open('POST', `https://staffwars.azurewebsites.net/api/boss/${this.bossId}/start/`, false);
+
       // POST 送信の場合は Content-Type は固定.
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      //
+
       xhr.send('');
       xhr.abort(); // 再利用する際にも abort() しないと再利用できないらしい.
     },
 
     // 矢印切り替え
-    switchArrow (el) {
+    switchArrow(el) {
       const scrollTop = el.scrollTop;
 
       if (scrollTop === 0) {
@@ -756,7 +771,9 @@ export default {
   }
 };
 </script>
+<!-- /script -->
 
+<!-- style -->
 <style lang="scss" scoped>
 @import "../../scss/setting/var";
 @import "../../scss/setting/sprite";
@@ -772,3 +789,4 @@ export default {
 @import "../../scss/module/resultTable";
 @import "../../scss/module/loader";
 </style>
+<!-- /style -->

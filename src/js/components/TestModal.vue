@@ -1,3 +1,4 @@
+<!-- template -->
 <template>
   <div class="testModal" v-if="isActiveTest">
     <span class="testModal__close" @click="clickCloseHandler">×</span>
@@ -15,18 +16,20 @@
     </form>
   </div>
 </template>
+<!-- /template -->
 
+<!-- script -->
 <script>
 export default {
   name: 'testModal',
   props: ['bossInfo'],
-  data () {
+  data() {
     return {
       staffCode: 'inoue-no',
       isActiveTest: false
     };
   },
-  created () {
+  created() {
     // 上司情報の受け取りを検知
     this.$watch('bossInfo', () => {
       this.isActiveTest = true;
@@ -34,7 +37,7 @@ export default {
   },
   methods: {
     // 上司待ち登録イベント（テスト用）
-    submitRegisterHandler (e) {
+    submitRegisterHandler(e) {
       e.preventDefault();
 
       // 上司待ちを登録
@@ -42,7 +45,7 @@ export default {
     },
 
     // 上司待ち解除イベント（テスト用）
-    resetRegisterHandler (e) {
+    resetRegisterHandler(e) {
       e.preventDefault();
 
       // 上司待ちを解除
@@ -50,7 +53,7 @@ export default {
     },
 
     // 閉じるイベント（テスト用）
-    clickCloseHandler () {
+    clickCloseHandler() {
       this.isActiveTest = false;
     },
 
@@ -65,7 +68,7 @@ export default {
         console.log(response);
       }, (response) => {
         // error callback
-        console.log(response);
+        console.error(response);
       });
     },
 
@@ -80,14 +83,17 @@ export default {
         console.log(response);
       }, (response) => {
         // error callback
-        console.log(response);
+        console.error(response);
       });
-    },
+    }
   }
 };
 </script>
+<!-- /script -->
 
+<!-- style -->
 <style lang="scss" scoped>
 @import "../../scss/setting/var";
 @import "../../scss/module/testModal";
 </style>
+<!-- /style -->

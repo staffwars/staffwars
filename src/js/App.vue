@@ -1,3 +1,4 @@
+<!-- template -->
 <template>
   <div id="app" class="bg">
     <testModal v-bind:bossInfo="bossInfoFromChild"></testModal>
@@ -5,7 +6,9 @@
     <navigation v-bind:bossInfo="bossInfoFromChild"></navigation>
   </div>
 </template>
+<!-- /template -->
 
+<!-- script -->
 <script>
 import Frame from './components/Frame.vue';
 import Navigation from './components/Navigation.vue';
@@ -30,7 +33,9 @@ export default {
   }
 };
 </script>
+<!-- /script -->
 
+<!-- style -->
 <style lang="scss">
 @import "../scss/setting/var";
 @import "../scss/setting/sprite";
@@ -41,3 +46,4 @@ export default {
 @import "../scss/utility/mg";
 @import "../scss/utility/txt";
 </style>
+<!-- /style -->

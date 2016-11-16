@@ -1,3 +1,4 @@
+<!-- template -->
 <template>
   <nav>
     <ul id="js-nav" class="navigation">
@@ -39,12 +40,14 @@
     </ul>
   </nav>
 </template>
+<!-- /template -->
 
+<!-- script -->
 <script>
 export default {
   name: 'navigation',
   props: ['bossInfo'],
-  data () {
+  data() {
     return {
       isActiveBossInFo: false,
       isActiveSchedule: false,
@@ -53,9 +56,7 @@ export default {
       isTimeCautionNotice: false
     };
   },
-  created () {
-    this.submitFlag;
-
+  created() {
     // 上司情報の受け取りを検知
     this.$watch('bossInfo', () => {
       this.isActiveBossInFo = true;
@@ -76,7 +77,7 @@ export default {
   },
   methods: {
     // リセットボタンの表示・非表示を切り替え
-    switchResetButton () {
+    switchResetButton() {
       if (this.bossInfo.time === '') {
         // リセットボタン非表示
         this.isActiveReset = false;
@@ -96,17 +97,18 @@ export default {
     },
 
     // フォームがsubmitされた時のイベント
-    submitTimeHandler (e) {
+    submitTimeHandler(e) {
       e.preventDefault();
 
       // タイマー止める
       clearTimeout(this.submitFlag);
 
+      // 上司情報を更新
       this.updateStartTime();
     },
 
     // リセットボタンが押された時のイベント
-    resetTimeHandler () {
+    resetTimeHandler() {
       // dataを空に
       this.bossInfo.time = '';
 
@@ -115,7 +117,7 @@ export default {
     },
 
     // 上司情報の時間を更新
-    updateStartTime () {
+    updateStartTime() {
       if (this.bossInfo.time === '') { // 入力された値が空だったら
         // start_datetimeを空で送る
         this.sendStartTime('');
@@ -134,25 +136,24 @@ export default {
     },
 
     // 入力された値をvalidate
-    validateInputTime () {
+    validateInputTime() {
       const result = this.bossInfo.time.match(/^[0-2][0-9]:[0-5][0-9]$/);
 
       if (result) {
         return result[0];
       }
+
       return null;
     },
 
     // 時間APIに送る
-    sendStartTime (timeString) {
+    sendStartTime(timeString) {
       const updateInfo = {
         start_datetime: timeString
       };
 
-      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then((response) => {
+      this.$http.post(`https://staffwars.azurewebsites.net/api/boss/${this.bossInfo.id}/`, updateInfo).then(() => {
         // success callback
-        console.log(response);
-
         // 時間がAPIに送られたことを文字色の変化でユーザに伝える
         this.isTimeCautionNotice = true;
 
@@ -160,12 +161,12 @@ export default {
         this.$refs.timeText.blur();
       }, (response) => {
         // error callback
-        console.log(response);
+        console.error(response);
       });
     },
 
     // 入力された時間をISO文字列に変換
-    formatInputTime (validatedTime) {
+    formatInputTime(validatedTime) {
       const splitedTime = validatedTime.split(':');
       const hour = splitedTime[0];
       const minutes = splitedTime[1];
@@ -180,7 +181,9 @@ export default {
   }
 };
 </script>
+<!-- /script -->
 
+<!-- style -->
 <style lang="scss" scoped>
 @import "../../scss/setting/var";
 @import "../../scss/setting/sprite";
@@ -189,3 +192,4 @@ export default {
 @import "../../scss/module/title";
 @import "../../scss/module/time";
 </style>
+<!-- /style -->
