@@ -1,7 +1,7 @@
 <!-- template -->
 <template>
   <div id="app" class="bg">
-    <testModal v-bind:bossInfo="bossInfoFromChild"></testModal>
+    <!-- <testModal v-bind:bossInfo="bossInfoFromChild"></testModal> -->
     <frame @send-from-frame="getBossInfo"></frame>
     <navigation v-bind:bossInfo="bossInfoFromChild"></navigation>
   </div>
