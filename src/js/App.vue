@@ -12,14 +12,14 @@
 <script>
 import Frame from './components/Frame.vue';
 import Navigation from './components/Navigation.vue';
-import TestModal from './components/TestModal.vue';
+// import TestModal from './components/TestModal.vue';
 
 export default {
   name: 'app',
   components: {
     Frame,
     Navigation,
-    TestModal,
+    // TestModal,
   },
   data() {
     return {
