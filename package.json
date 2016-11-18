@@ -10,7 +10,7 @@
     "build": "npm-run-all clean copy build:vue",
     "dev": "npm-run-all build --parallel watchify serve",
     "clean": "rm -rf docs && mkdir -p docs/css docs/js docs/img docs/sample",
-    "copy": "cp src/index.html docs/index.html && cp src/img/*.{png,ico} docs/img/",
+    "copy": "cp src/index.html docs/index.html && cp src/img/*.png docs/img/ && cp src/img/favicon.ico docs/img/",
     "build:vue": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o docs/css/style.css ] -e src/js/index.js | uglifyjs -c warnings=false -m > docs/js/bundle.js",
     "watchify": "watchify -vd -p browserify-hmr -e src/js/index.js -o docs/js/bundle.js",
     "serve": "http-server docs/ -o -c 1 -a localhost",
