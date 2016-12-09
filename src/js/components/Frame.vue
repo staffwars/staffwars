@@ -53,7 +53,7 @@
                   <tr v-for="(ranking, index) in rankings">
                     <td class="resultTable__td resultTable__rank">{{ index + 1 }}</td>
                     <td class="resultTable__td resultTable__name">{{ ranking.name }}</td>
-                    <td class="resultTable__td resultTable__time">{{ ranking.record }}</td>
+                    <!-- <td class="resultTable__td resultTable__time">{{ ranking.record }}</td> -->
                   </tr>
                 </table>
               </div>
@@ -773,7 +773,7 @@ export default {
           name: result[i].subordinate.name,
 
           // 早押し開始時間から実際に押された時間を引き、秒に換算して配列に追加
-          record: (result[i].datetime - this.pushStartTime) / 1000,
+          // record: (result[i].datetime - this.pushStartTime) / 1000,
 
           organization: result[i].subordinate.organization,
         };
