@@ -355,14 +355,14 @@ export default {
           case 'result': { // 早押し結果の通知
             // console.log('countdown result');
 
-            // push通知の受け取りを停止
-            ds.off('push');
-
             // ローディング非表示
             this.isActiveLoading = false;
 
             // 結果を表示
             this.showPushResultModule(data.value);
+
+            // push通知の受け取りを停止
+            ds.off('push');
             break;
           }
           default:
