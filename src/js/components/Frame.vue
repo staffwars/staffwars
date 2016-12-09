@@ -313,6 +313,8 @@ export default {
       const ds = milkcocoa.dataStore('messages');
 
       ds.on('push', (data) => {
+        // console.log(data);
+
         switch (data.value.type) {
           case 'pre_start': { // カウントダウン開始５秒前
             // console.log('countdown pre start');
@@ -355,14 +357,17 @@ export default {
           case 'result': { // 早押し結果の通知
             // console.log('countdown result');
 
+            // push通知の受け取りを停止
+            ds.off('push');
+
             // ローディング非表示
             this.isActiveLoading = false;
 
             // 結果を表示
-            this.showPushResultModule(data.value);
+            // this.showPushResultModule(data.value.result);
 
-            // push通知の受け取りを停止
-            ds.off('push');
+            // 上司情報を取得（早押し結果用）
+            this.getBossData();
             break;
           }
           default:
@@ -379,7 +384,7 @@ export default {
     getBossesData() {
       this.$http.get('https://staffwars.azurewebsites.net/api/boss/').then((response) => {
         // success callback
-        const bossData = this.getBossData(response.data, this.bossId);
+        const bossData = this.createBossData(response.data, this.bossId);
 
         if (bossData) {
           // 親コンポーネントに渡す上司情報を準備
@@ -415,8 +420,8 @@ export default {
       });
     },
 
-    // 特定の上司情報を取得
-    getBossData(bossesData, bossId) {
+    // 特定の上司情報を生成
+    createBossData(bossesData, bossId) {
       const bossData = bossesData.data.filter(v => v.id === bossId);
 
       if (bossData.length === 1) {
@@ -424,6 +429,17 @@ export default {
       }
 
       return null;
+    },
+
+    // 特定の上司情報をAPI経由で取得
+    getBossData() {
+      this.$http.get(`https://staffwars.azurewebsites.net/api/boss/${this.bossId}/`).then((response) => {
+        // success callback
+        this.showPushResultModule(response.data.data.push_list);
+      }, (response) => {
+        // error callback
+        console.error(response);
+      });
     },
 
     // APIから受け取った時間を、hh:mmの文字列に変換
@@ -672,11 +688,9 @@ export default {
     },
 
     // 早押し結果を表示
-    showPushResultModule(value) {
+    showPushResultModule(result) {
       // box非表示
       this.isActiveDarkBox = false;
-
-      const result = value.result;
 
       if (result.length) {
         // datetimeでソートし、部下の組織を取得
